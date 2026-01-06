@@ -275,7 +275,7 @@ export default function Nivel1Page() {
               {!isChecked && (
                 <div className="flex flex-wrap justify-center gap-4 mt-8">
                   <Link
-                    href="/matematica"
+                    href="/matematica/menu"
                     className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                   >
                     ← Înapoi la Matematică
@@ -314,7 +314,7 @@ export default function Nivel1Page() {
                   {/* Кнопки после проверки */}
                   <div className="flex flex-wrap justify-center gap-4 mt-8">
                     <Link
-                      href="/matematica"
+                      href="/matematica/menu"
                       className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                     >
                       ← Înapoi la Matematică

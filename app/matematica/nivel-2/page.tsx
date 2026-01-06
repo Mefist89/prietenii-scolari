@@ -226,6 +226,14 @@ export default function Nivel2Page() {
             </div>
 
             <div className="space-y-8">
+              {/* Explicația */}
+              <div className="bg-[#FFF3D6] p-6 rounded-xl border-2 border-[#F4D35E]">
+                <h2 className="text-2xl font-bold text-[#E67E3B] mb-4">📚 Ce vei învăța:</h2>
+                <p className="text-lg text-gray-700">
+                  Învățăm să rezolvăm exerciții cu adunări și scăderi! Vom completa valorile lipsă în ecuații matematice și vom învăța să lucrăm cu schemele numerice.
+                </p>
+              </div>
+
               {/* Exercițiul 1 - Квадраты */}
               <div className="bg-[#E8F4F8] p-8 rounded-2xl border-4 border-[#95C9DD]">
                 <h3 className="text-2xl font-bold text-[#5A8FA8] mb-6">Exercițiul 1</h3>
@@ -679,7 +687,7 @@ export default function Nivel2Page() {
               {!isChecked && (
                 <div className="flex flex-wrap justify-center gap-4 mt-8">
                   <Link
-                    href="/matematica"
+                    href="/matematica/menu"
                     className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                   >
                     ← Înapoi la Matematică
@@ -718,7 +726,7 @@ export default function Nivel2Page() {
                   {/* Кнопки после проверки */}
                   <div className="flex flex-wrap justify-center gap-4 mt-8">
                     <Link
-                      href="/matematica"
+                      href="/matematica/menu"
                       className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                     >
                       ← Înapoi la Matematică
