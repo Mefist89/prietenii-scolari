@@ -13,16 +13,16 @@ export default function MatematicaIntroPage() {
   const [displayedSecondText, setDisplayedSecondText] = useState('');
   const [showButton, setShowButton] = useState(false);
 
-  const firstText = 'Привет, меня зовут Мая, давай учить математику вместе!';
-  const secondText = 'Ты готов?';
+  const firstText = 'Salut, sunt Maia! Hai să ne jucăm cu cifrele!';
+  const secondText = 'Ești pregătit pentru provocare?';
 
   useEffect(() => {
-    // Показываем Маю через 5 секунд
+    // Показываем Маю через 2 секунд
     const mayaTimer = setTimeout(() => {
       setShowMaya(true);
       // Начинаем показывать первый текст через 1 секунду после появления Маи
       setTimeout(() => setShowText(true), 1000);
-    }, 5000);
+    }, 2000);
 
     return () => clearTimeout(mayaTimer);
   }, []);
@@ -123,7 +123,7 @@ export default function MatematicaIntroPage() {
                     href="/matematica/menu"
                     className="px-12 py-4 bg-green-600 hover:bg-green-700 text-white text-2xl font-bold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                   >
-                    Да! Поехали! 🚀
+                    Da! Pornim la drum! 🚀
                   </Link>
                 </motion.div>
               )}
