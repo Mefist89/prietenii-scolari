@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import ResultsPage from '@/components/ResultsPage';
 
 export default function Nivel2Page() {
   // Exercițiul 1: Квадраты - ввод цифр
@@ -17,6 +18,7 @@ export default function Nivel2Page() {
   // Проверка ответов
   const [isChecked, setIsChecked] = useState(false);
   const [score, setScore] = useState(0);
+  const [showResults, setShowResults] = useState(false);
 
   // Правильные ответы для Exercițiul 1
   const exercises1 = [
@@ -40,14 +42,14 @@ export default function Nivel2Page() {
     { question: '= 5 +', suffix: '+ 3', correct: '0' },
   ];
 
-  // Третий ряд - круг с цифрой 12
+  // Третий ряд - круг с цифрой 8
   const exercises2Third = [
     { question: '= 10 -', correct: '2' },
-    { question: '= 9 -', correct: '3' },
-    { question: '= 8 -', correct: '4' },
+    { question: '= 9 -', correct: '1' },
+    { question: '= 8 -', correct: '0' },
   ];
 
-  // Четвертый ряд - круг с цифрой 9
+  // Четвертый ряд - круг с цифрой 6
   const exercises2Fourth = [
     { question: '= 9 -', suffix: '- 1', correct: '2' },
     { question: '= 7 -', suffix: '- 1', correct: '0' },
@@ -174,6 +176,7 @@ export default function Nivel2Page() {
 
     setScore(correctCount);
     setIsChecked(true);
+    setShowResults(true);
   };
 
   const resetAnswers = () => {
@@ -182,6 +185,7 @@ export default function Nivel2Page() {
     setEx3Answers(['', '', '', '', '', '', '', '', '', '', '', '']);
     setIsChecked(false);
     setScore(0);
+    setShowResults(false);
   };
 
   const getInputClass = (answer: string, correct: string) => {
@@ -192,6 +196,20 @@ export default function Nivel2Page() {
       ? 'border-2 border-[#5A9C5C] bg-[#E8F5E8] text-[#5A9C5C]'
       : 'border-2 border-[#C95F5F] bg-[#FFE8E8] text-[#C95F5F]';
   };
+
+  // Если показываем результаты, отображаем ResultsPage
+  if (showResults) {
+    return (
+      <ResultsPage
+        score={score}
+        totalQuestions={28}
+        levelName="Nivel 2"
+        onRetry={resetAnswers}
+        nextLevelPath="/matematica/nivel-3"
+        menuPath="/matematica/menu"
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -328,7 +346,7 @@ export default function Nivel2Page() {
                     <div className="flex items-center gap-6">
                       {/* Большой оранжевый круг */}
                       <div className="w-28 h-28 flex-shrink-0 bg-[#E67E3B] rounded-full flex items-center justify-center">
-                        <span className="text-5xl font-bold text-white">12</span>
+                        <span className="text-5xl font-bold text-white">8</span>
                       </div>
 
                       {/* Три примера */}
@@ -684,68 +702,26 @@ export default function Nivel2Page() {
               </div>
 
               {/* Кнопки навигации и действий */}
-              {!isChecked && (
-                <div className="flex flex-wrap justify-center gap-4 mt-8">
-                  <Link
-                    href="/matematica/menu"
-                    className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                  >
-                    ← Înapoi la Matematică
-                  </Link>
-                  <button
-                    onClick={checkAnswers}
-                    className="px-12 py-5 bg-[#E67E3B] hover:bg-[#D66D2A] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                  >
-                    Verifică răspunsurile
-                  </button>
-                  <button
-                    onClick={resetAnswers}
-                    className="px-12 py-5 bg-[#8B7355] hover:bg-[#7A6449] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                  >
-                    Resetează
-                  </button>
-                </div>
-              )}
-
-              {/* Результат */}
-              {isChecked && (
-                <>
-                  <div className="bg-gradient-to-r from-[#F4D35E] to-[#E67E3B] p-8 rounded-2xl text-center border-4 border-[#E8B84E]">
-                    <div className="text-6xl mb-4">{score === 28 ? '🏆' : score >= 24 ? '⭐' : score >= 20 ? '👍' : '💪'}</div>
-                    <h3 className="text-4xl font-bold text-white mb-4">
-                      Rezultatul tău: {score}/28
-                    </h3>
-                    <p className="text-xl text-white mb-6">
-                      {score === 28 && 'Perfect! Ești un campion!'}
-                      {score >= 24 && score < 28 && 'Foarte bine! Continuă așa!'}
-                      {score >= 20 && score < 24 && 'Bine! Mai încearcă o dată!'}
-                      {score < 20 && 'Nu te descuraja! Încearcă din nou!'}
-                    </p>
-                  </div>
-
-                  {/* Кнопки после проверки */}
-                  <div className="flex flex-wrap justify-center gap-4 mt-8">
-                    <Link
-                      href="/matematica/menu"
-                      className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                    >
-                      ← Înapoi la Matematică
-                    </Link>
-                    <button
-                      onClick={resetAnswers}
-                      className="px-12 py-5 bg-[#8B7355] hover:bg-[#7A6449] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                    >
-                      Resetează
-                    </button>
-                    <Link
-                      href="/matematica/nivel-3"
-                      className="px-8 py-5 bg-[#5A9C5C] hover:bg-[#4A8C4C] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                    >
-                      Următorul Nivel →
-                    </Link>
-                  </div>
-                </>
-              )}
+              <div className="flex flex-wrap justify-center gap-4 mt-8">
+                <Link
+                  href="/matematica/menu"
+                  className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+                >
+                  ← Înapoi la Matematică
+                </Link>
+                <button
+                  onClick={checkAnswers}
+                  className="px-12 py-5 bg-[#E67E3B] hover:bg-[#D66D2A] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+                >
+                  Verifică răspunsurile
+                </button>
+                <button
+                  onClick={resetAnswers}
+                  className="px-12 py-5 bg-[#8B7355] hover:bg-[#7A6449] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+                >
+                  Resetează
+                </button>
+              </div>
             </div>
           </div>
         </div>

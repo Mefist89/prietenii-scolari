@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-
+import ResultsPage from '@/components/ResultsPage';
 
 export default function Nivel1Page() {
   // Exercițiul 1: Numere simple
@@ -18,6 +18,7 @@ export default function Nivel1Page() {
   // Проверка ответов
   const [isChecked, setIsChecked] = useState(false);
   const [score, setScore] = useState(0);
+  const [showResults, setShowResults] = useState(false);
 
   const exercises1 = [
     { left: '1', right: '2', correct: '<' },
@@ -75,6 +76,7 @@ export default function Nivel1Page() {
 
     setScore(correctCount);
     setIsChecked(true);
+    setShowResults(true);
   };
 
   const resetAnswers = () => {
@@ -83,6 +85,7 @@ export default function Nivel1Page() {
     setEx3Answers(['', '', '', '']);
     setIsChecked(false);
     setScore(0);
+    setShowResults(false);
   };
 
   const getButtonClass = (exerciseSet: string, index: number, buttonValue: string) => {
@@ -110,6 +113,20 @@ export default function Nivel1Page() {
     }
     return 'bg-white hover:bg-[#FFF3D6] text-gray-700 border-2 border-[#D4C5A9] transition-colors';
   };
+
+  // Если показываем результаты, отображаем ResultsPage
+  if (showResults) {
+    return (
+      <ResultsPage
+        score={score}
+        totalQuestions={12}
+        levelName="Nivel 1"
+        onRetry={resetAnswers}
+        nextLevelPath="/matematica/nivel-2"
+        menuPath="/matematica/menu"
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -272,68 +289,26 @@ export default function Nivel1Page() {
               </div>
 
               {/* Кнопки навигации и действий */}
-              {!isChecked && (
-                <div className="flex flex-wrap justify-center gap-4 mt-8">
-                  <Link
-                    href="/matematica/menu"
-                    className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                  >
-                    ← Înapoi la Matematică
-                  </Link>
-                  <button
-                    onClick={checkAnswers}
-                    className="px-12 py-5 bg-[#E67E3B] hover:bg-[#D66D2A] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                  >
-                    Verifică răspunsurile
-                  </button>
-                  <button
-                    onClick={resetAnswers}
-                    className="px-12 py-5 bg-[#8B7355] hover:bg-[#7A6449] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                  >
-                    Resetează
-                  </button>
-                </div>
-              )}
-
-              {/* Результат */}
-              {isChecked && (
-                <>
-                  <div className="bg-gradient-to-r from-[#F4D35E] to-[#E67E3B] p-8 rounded-2xl text-center border-4 border-[#E8B84E]">
-                    <div className="text-6xl mb-4">{score === 12 ? '🏆' : score >= 9 ? '⭐' : score >= 6 ? '👍' : '💪'}</div>
-                    <h3 className="text-4xl font-bold text-white mb-4">
-                      Rezultatul tău: {score}/12
-                    </h3>
-                    <p className="text-xl text-white mb-6">
-                      {score === 12 && 'Perfect! Ești un campion!'}
-                      {score >= 9 && score < 12 && 'Foarte bine! Continuă așa!'}
-                      {score >= 6 && score < 9 && 'Bine! Mai încearcă o dată!'}
-                      {score < 6 && 'Nu te descuraja! Încearcă din nou!'}
-                    </p>
-                  </div>
-
-                  {/* Кнопки после проверки */}
-                  <div className="flex flex-wrap justify-center gap-4 mt-8">
-                    <Link
-                      href="/matematica/menu"
-                      className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                    >
-                      ← Înapoi la Matematică
-                    </Link>
-                    <button
-                      onClick={resetAnswers}
-                      className="px-12 py-5 bg-[#8B7355] hover:bg-[#7A6449] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                    >
-                      Resetează
-                    </button>
-                    <Link
-                      href="/matematica/nivel-2"
-                      className="px-8 py-5 bg-[#5A9C5C] hover:bg-[#4A8C4C] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                    >
-                      Următorul Nivel →
-                    </Link>
-                  </div>
-                </>
-              )}
+              <div className="flex flex-wrap justify-center gap-4 mt-8">
+                <Link
+                  href="/matematica/menu"
+                  className="px-8 py-5 bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+                >
+                  ← Înapoi la Matematică
+                </Link>
+                <button
+                  onClick={checkAnswers}
+                  className="px-12 py-5 bg-[#E67E3B] hover:bg-[#D66D2A] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+                >
+                  Verifică răspunsurile
+                </button>
+                <button
+                  onClick={resetAnswers}
+                  className="px-12 py-5 bg-[#8B7355] hover:bg-[#7A6449] text-white font-bold text-2xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+                >
+                  Resetează
+                </button>
+              </div>
             </div>
           </div>
         </div>
