@@ -34,7 +34,7 @@ export default function Nivel5Page() {
     { name: 'pear', image: '/images/ui/fruits/pear.png', weight: 2 },
   ];
 
-  // Nivel 5: три типа упражнений
+  // Nivel 5: четыре типа упражнений
   const allExercises = [
     // Балансовые упражнения (1-5)
     { id: 1, type: 'balance' as const, leftFruits: ['strawberry'], rightFruits: [] }, // вес 5
@@ -54,6 +54,12 @@ export default function Nivel5Page() {
     { id: 13, type: 'money' as const, fruit: 'orange', price: 3 },
     { id: 14, type: 'money' as const, fruit: 'peach', price: 4 },
     { id: 15, type: 'money' as const, fruit: 'strawberry', price: 5 },
+    // Упражнения со сдачей (16-20)
+    { id: 16, type: 'change' as const, fruit: 'cherry', price: 1, givenMoney: 1 }, // сдача 0
+    { id: 17, type: 'change' as const, fruit: 'apple', price: 2, givenMoney: 5 }, // сдача 3
+    { id: 18, type: 'change' as const, fruit: 'orange', price: 3, givenMoney: 5 }, // сдача 2
+    { id: 19, type: 'change' as const, fruit: 'peach', price: 4, givenMoney: 10 }, // сдача 6
+    { id: 20, type: 'change' as const, fruit: 'strawberry', price: 5, givenMoney: 10 }, // сдача 5
   ];
 
   const [currentExercise, setCurrentExercise] = useState(0);
@@ -67,6 +73,9 @@ export default function Nivel5Page() {
   const [showFruit, setShowFruit] = useState(false);
   const [showMoney, setShowMoney] = useState(false);
   const [selectedMoney, setSelectedMoney] = useState<number[]>([]);
+
+  // Для четвертого задания со сдачей
+  const [selectedChange, setSelectedChange] = useState<number[]>([]);
 
   // Вычисляем вес стороны
   const calculateWeight = (fruits: string[]) => {
@@ -199,11 +208,67 @@ export default function Nivel5Page() {
     }
   };
 
+  // Проверить сдачу
+  const checkChangeAnswer = (noChange: boolean = false) => {
+    const currentEx = allExercises[currentExercise];
+    if (currentEx.type !== 'change') return;
+
+    const requiredChange = currentEx.givenMoney - currentEx.price;
+    const userChange = selectedChange.reduce((sum, value) => sum + value, 0);
+
+    // Если нажата кнопка "Без сдачи"
+    if (noChange) {
+      if (requiredChange === 0) {
+        // Правильно - сдачи действительно нет
+        setScore(score + 1);
+        moveToNextExercise();
+      } else {
+        alert('Неправильно! Нужна сдача.');
+      }
+      return;
+    }
+
+    // Проверка выбранной сдачи
+    if (userChange === requiredChange) {
+      // Правильно!
+      setScore(score + 1);
+      moveToNextExercise();
+    } else {
+      alert('Restul este incorect! Verifică din nou.');
+    }
+  };
+
+  const addChange = (value: number) => {
+    setSelectedChange([...selectedChange, value]);
+  };
+
+  const removeLastChange = () => {
+    if (selectedChange.length > 0) {
+      setSelectedChange(selectedChange.slice(0, -1));
+    }
+  };
+
+  const moveToNextExercise = () => {
+    if (currentExercise < allExercises.length - 1) {
+      setCurrentExercise(currentExercise + 1);
+      setSelectedMoney([]);
+      setSelectedChange([]);
+      setRightSide([]);
+      setUserAnswer('');
+      setCompletedExercises(completedExercises + 1);
+      setShowFruit(false);
+      setShowMoney(false);
+    } else {
+      setShowResults(true);
+    }
+  };
+
   const resetGame = () => {
     setCurrentExercise(0);
     setRightSide([]);
     setUserAnswer('');
     setSelectedMoney([]);
+    setSelectedChange([]);
     setScore(0);
     setShowResults(false);
     setCompletedExercises(0);
@@ -211,10 +276,10 @@ export default function Nivel5Page() {
     setShowMoney(false);
   };
 
-  // Анимация появления фрукта и денег для money упражнений
+  // Анимация появления фрукта и денег для money и change упражнений
   useEffect(() => {
     const currentEx = allExercises[currentExercise];
-    if (currentEx.type === 'money') {
+    if (currentEx.type === 'money' || currentEx.type === 'change') {
       // Сбрасываем состояние
       setShowFruit(false);
       setShowMoney(false);
@@ -271,6 +336,7 @@ export default function Nivel5Page() {
   const isBalanceExercise = currentEx.type === 'balance';
   const isPriceExercise = currentEx.type === 'price';
   const isMoneyExercise = currentEx.type === 'money';
+  const isChangeExercise = currentEx.type === 'change';
 
   let leftWeight = 0;
   let rightWeight = 0;
@@ -283,6 +349,7 @@ export default function Nivel5Page() {
   }
 
   const totalMoney = selectedMoney.reduce((sum, value) => sum + value, 0);
+  const totalChange = selectedChange.reduce((sum, value) => sum + value, 0);
 
   // Доступные купюры
   const availableMoney = [
@@ -577,6 +644,125 @@ export default function Nivel5Page() {
                           className="px-12 py-3 bg-[#E67E3B] hover:bg-[#D66D2A] text-white font-bold rounded-full shadow-lg transition-all hover:scale-105"
                         >
                           Verifică plata
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+              )}
+
+              {/* Задание 4 со сдачей */}
+              {isChangeExercise && (
+              <div className="bg-[#E8E8FF] p-8 rounded-2xl border-4 border-[#9494FF]">
+                <h3 className="text-2xl font-bold text-[#5A5AE6] mb-6 text-center">Dă restul!</h3>
+                <p className="text-lg font-bold text-[#8B7355] mb-4 text-center">
+                  Exercițiul {currentExercise + 1}: Calculează restul
+                </p>
+
+                {/* Стол с фруктом */}
+                <div className="bg-[#8B4513] p-8 rounded-2xl border-4 border-[#654321] mb-6 relative min-h-[200px] flex items-center justify-center">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#FFF3D6] px-4 py-1 rounded-full border-2 border-[#F4D35E]">
+                    <span className="text-lg font-bold text-[#8B7355]">Masa cu fruct</span>
+                  </div>
+
+                  {/* Фрукт появляется через 1 секунду */}
+                  {showFruit && currentEx.type === 'change' && (
+                    <div className="flex flex-col items-center gap-4 animate-[scaleIn_0.5s_ease-out]">
+                      <div className="w-[120px] h-[120px] flex items-center justify-center bg-white/20 rounded-lg p-2">
+                        <Image
+                          src={`/images/ui/fruits/${currentEx.fruit}.png`}
+                          alt={currentEx.fruit}
+                          width={120}
+                          height={120}
+                          className="object-contain max-w-[120px] max-h-[120px]"
+                          style={{ width: '120px', height: '120px', objectFit: 'contain' }}
+                        />
+                      </div>
+                      <div className="text-3xl font-bold text-white bg-black/30 px-6 py-2 rounded-lg">
+                        Preț: {currentEx.price} lei
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Деньги покупателя появляются через 2 секунды */}
+                {showMoney && (
+                  <>
+                    {/* Деньги от покупателя */}
+                    <div className="bg-green-100 p-4 rounded-xl shadow-lg border-4 border-green-400 mb-6 animate-[scaleIn_0.5s_ease-out]">
+                      <h4 className="text-lg font-bold text-green-700 mb-3 text-center">Cumpărătorul a dat:</h4>
+                      <div className="flex justify-center items-center gap-4">
+                        <div className="text-4xl font-bold text-green-700">{currentEx.givenMoney} lei</div>
+                      </div>
+                      {currentEx.price < currentEx.givenMoney && (
+                        <div className="text-center mt-3">
+                          <span className="text-xl font-bold text-green-700">
+                            Rest necesar: {currentEx.givenMoney - currentEx.price} lei
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Выбранная сдача */}
+                    <div className="bg-white p-4 rounded-xl shadow-lg border-4 border-[#5A5AE6] mb-6 animate-[scaleIn_0.5s_ease-out]">
+                      <h4 className="text-lg font-bold text-[#5A5AE6] mb-3 text-center">Restul selectat:</h4>
+                      <div className="flex flex-wrap gap-2 justify-center min-h-[60px] items-center">
+                        {selectedChange.map((value, index) => (
+                          <div key={index} className="text-xl font-bold text-white bg-[#5A5AE6] px-4 py-2 rounded-lg shadow-md">
+                            {value} lei
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-center mt-3">
+                        <span className="text-2xl font-bold text-[#5A5AE6]">Total: {totalChange} lei</span>
+                      </div>
+                    </div>
+
+                    {/* Выбор купюр для сдачи */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 animate-[scaleIn_0.5s_ease-out]">
+                      {availableMoney.map((money) => (
+                        <button
+                          key={money.value}
+                          onClick={() => addChange(money.value)}
+                          className="flex flex-col items-center bg-white p-3 rounded-xl shadow-md hover:shadow-xl hover:scale-105 transition-all border-2 border-[#9494FF] hover:border-[#5A5AE6]"
+                        >
+                          <div className="w-full h-[80px] flex items-center justify-center mb-2">
+                            <Image
+                              src={money.image}
+                              alt={`${money.value} lei`}
+                              width={120}
+                              height={60}
+                              className="object-contain max-w-full max-h-[80px]"
+                            />
+                          </div>
+                          <span className="text-lg font-bold text-[#5A5AE6]">{money.value} lei</span>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Кнопки действий */}
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="flex justify-center gap-4 flex-wrap">
+                        {selectedChange.length > 0 && (
+                          <button
+                            onClick={removeLastChange}
+                            className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-full shadow-lg transition-all"
+                          >
+                            ← Șterge ultima bancnotă
+                          </button>
+                        )}
+                        <button
+                          onClick={() => checkChangeAnswer(true)}
+                          className="px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-full shadow-lg transition-all hover:scale-105"
+                        >
+                          Fără rest
+                        </button>
+                        <button
+                          onClick={() => checkChangeAnswer(false)}
+                          className="px-12 py-3 bg-[#5A5AE6] hover:bg-[#4A4AD6] text-white font-bold rounded-full shadow-lg transition-all hover:scale-105"
+                        >
+                          Verifică restul
                         </button>
                       </div>
                     </div>
