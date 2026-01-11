@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ResultsPage from '@/components/ResultsPage';
 
 export default function Nivel5Page() {
@@ -34,7 +34,7 @@ export default function Nivel5Page() {
     { name: 'pear', image: '/images/ui/fruits/pear.png', weight: 2 },
   ];
 
-  // Nivel 5: сначала балансовые упражнения, затем упражнения с покупкой
+  // Nivel 5: три типа упражнений
   const allExercises = [
     // Балансовые упражнения (1-5)
     { id: 1, type: 'balance' as const, leftFruits: ['strawberry'], rightFruits: [] }, // вес 5
@@ -48,6 +48,12 @@ export default function Nivel5Page() {
     { id: 8, type: 'price' as const, fruits: [{ name: 'orange', price: 3 }, { name: 'cherry', price: 1 }] }, // цена 4
     { id: 9, type: 'price' as const, fruits: [{ name: 'peach', price: 4 }, { name: 'apple', price: 2 }] }, // цена 6
     { id: 10, type: 'price' as const, fruits: [{ name: 'strawberry', price: 5 }, { name: 'orange', price: 3 }] }, // цена 8
+    // Упражнения с деньгами (11-15)
+    { id: 11, type: 'money' as const, fruit: 'cherry', price: 1 },
+    { id: 12, type: 'money' as const, fruit: 'apple', price: 2 },
+    { id: 13, type: 'money' as const, fruit: 'orange', price: 3 },
+    { id: 14, type: 'money' as const, fruit: 'peach', price: 4 },
+    { id: 15, type: 'money' as const, fruit: 'strawberry', price: 5 },
   ];
 
   const [currentExercise, setCurrentExercise] = useState(0);
@@ -56,6 +62,11 @@ export default function Nivel5Page() {
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [completedExercises, setCompletedExercises] = useState(0);
+
+  // Для третьего задания с деньгами
+  const [showFruit, setShowFruit] = useState(false);
+  const [showMoney, setShowMoney] = useState(false);
+  const [selectedMoney, setSelectedMoney] = useState<number[]>([]);
 
   // Вычисляем вес стороны
   const calculateWeight = (fruits: string[]) => {
@@ -147,14 +158,87 @@ export default function Nivel5Page() {
     }
   };
 
+  // Проверить оплату деньгами
+  const checkMoneyAnswer = () => {
+    const currentEx = allExercises[currentExercise];
+    if (currentEx.type !== 'money') return;
+
+    const totalMoney = selectedMoney.reduce((sum, value) => sum + value, 0);
+    const requiredPrice = currentEx.price;
+
+    if (totalMoney >= requiredPrice) {
+      // Правильно - достаточно денег!
+      setScore(score + 1);
+
+      if (currentExercise < allExercises.length - 1) {
+        // Переходим к следующему упражнению
+        setCurrentExercise(currentExercise + 1);
+        setSelectedMoney([]);
+        setRightSide([]);
+        setUserAnswer('');
+        setCompletedExercises(completedExercises + 1);
+        setShowFruit(false);
+        setShowMoney(false);
+      } else {
+        // Все упражнения завершены
+        setShowResults(true);
+      }
+    } else {
+      // Неправильно - недостаточно денег
+      alert('Nu sunt suficienți bani! Adaugă mai multe bancnote.');
+    }
+  };
+
+  const addMoney = (value: number) => {
+    setSelectedMoney([...selectedMoney, value]);
+  };
+
+  const removeLastMoney = () => {
+    if (selectedMoney.length > 0) {
+      setSelectedMoney(selectedMoney.slice(0, -1));
+    }
+  };
+
   const resetGame = () => {
     setCurrentExercise(0);
     setRightSide([]);
     setUserAnswer('');
+    setSelectedMoney([]);
     setScore(0);
     setShowResults(false);
     setCompletedExercises(0);
+    setShowFruit(false);
+    setShowMoney(false);
   };
+
+  // Анимация появления фрукта и денег для money упражнений
+  useEffect(() => {
+    const currentEx = allExercises[currentExercise];
+    if (currentEx.type === 'money') {
+      // Сбрасываем состояние
+      setShowFruit(false);
+      setShowMoney(false);
+
+      // Показываем фрукт через 1 секунду
+      const fruitTimer = setTimeout(() => {
+        setShowFruit(true);
+      }, 1000);
+
+      // Показываем деньги через 2 секунды (1 сек + 1 сек)
+      const moneyTimer = setTimeout(() => {
+        setShowMoney(true);
+      }, 2000);
+
+      return () => {
+        clearTimeout(fruitTimer);
+        clearTimeout(moneyTimer);
+      };
+    } else {
+      // Для других типов упражнений сбрасываем
+      setShowFruit(false);
+      setShowMoney(false);
+    }
+  }, [currentExercise]);
 
   // Определяем состояние весов
   const getBalanceState = () => {
@@ -186,6 +270,7 @@ export default function Nivel5Page() {
   const currentEx = allExercises[currentExercise];
   const isBalanceExercise = currentEx.type === 'balance';
   const isPriceExercise = currentEx.type === 'price';
+  const isMoneyExercise = currentEx.type === 'money';
 
   let leftWeight = 0;
   let rightWeight = 0;
@@ -196,6 +281,16 @@ export default function Nivel5Page() {
     rightWeight = calculateWeight(rightSide);
     balanceState = getBalanceState();
   }
+
+  const totalMoney = selectedMoney.reduce((sum, value) => sum + value, 0);
+
+  // Доступные купюры
+  const availableMoney = [
+    { value: 1, image: '/images/ui/money/MD_1.jpg' },
+    { value: 5, image: '/images/ui/money/MD_5.jpg' },
+    { value: 10, image: '/images/ui/money/MD_10.jpg' },
+    { value: 20, image: '/images/ui/money/MD_20.jpg' },
+  ];
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -389,6 +484,104 @@ export default function Nivel5Page() {
                     Verifică răspunsul
                   </button>
                 </div>
+              </div>
+              )}
+
+              {/* Задание 3 с деньгами */}
+              {isMoneyExercise && (
+              <div className="bg-[#FFE8D6] p-8 rounded-2xl border-4 border-[#FFA94D]">
+                <h3 className="text-2xl font-bold text-[#E67E3B] mb-6 text-center">Plătește pentru fruct!</h3>
+                <p className="text-lg font-bold text-[#8B7355] mb-4 text-center">
+                  Exercițiul {currentExercise + 1}: Selectează bancnotele potrivite
+                </p>
+
+                {/* Стол с фруктом */}
+                <div className="bg-[#8B4513] p-8 rounded-2xl border-4 border-[#654321] mb-6 relative min-h-[200px] flex items-center justify-center">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#FFF3D6] px-4 py-1 rounded-full border-2 border-[#F4D35E]">
+                    <span className="text-lg font-bold text-[#8B7355]">Masa cu fruct</span>
+                  </div>
+
+                  {/* Фрукт появляется через 1 секунду */}
+                  {showFruit && currentEx.type === 'money' && (
+                    <div className="flex flex-col items-center gap-4 animate-[scaleIn_0.5s_ease-out]">
+                      <div className="w-[120px] h-[120px] flex items-center justify-center bg-white/20 rounded-lg p-2">
+                        <Image
+                          src={`/images/ui/fruits/${currentEx.fruit}.png`}
+                          alt={currentEx.fruit}
+                          width={120}
+                          height={120}
+                          className="object-contain max-w-[120px] max-h-[120px]"
+                          style={{ width: '120px', height: '120px', objectFit: 'contain' }}
+                        />
+                      </div>
+                      <div className="text-3xl font-bold text-white bg-black/30 px-6 py-2 rounded-lg">
+                        Preț: {currentEx.price} lei
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Деньги появляются через 2 секунды */}
+                {showMoney && (
+                  <>
+                    {/* Выбранные деньги */}
+                    <div className="bg-white p-4 rounded-xl shadow-lg border-4 border-[#E67E3B] mb-6 animate-[scaleIn_0.5s_ease-out]">
+                      <h4 className="text-lg font-bold text-[#E67E3B] mb-3 text-center">Banii selectați:</h4>
+                      <div className="flex flex-wrap gap-2 justify-center min-h-[60px] items-center">
+                        {selectedMoney.map((value, index) => (
+                          <div key={index} className="text-xl font-bold text-white bg-[#E67E3B] px-4 py-2 rounded-lg shadow-md">
+                            {value} lei
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-center mt-3">
+                        <span className="text-2xl font-bold text-[#E67E3B]">Total: {totalMoney} lei</span>
+                      </div>
+                    </div>
+
+                    {/* Выбор купюр */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 animate-[scaleIn_0.5s_ease-out]">
+                      {availableMoney.map((money) => (
+                        <button
+                          key={money.value}
+                          onClick={() => addMoney(money.value)}
+                          className="flex flex-col items-center bg-white p-3 rounded-xl shadow-md hover:shadow-xl hover:scale-105 transition-all border-2 border-[#FFA94D] hover:border-[#E67E3B]"
+                        >
+                          <div className="w-full h-[80px] flex items-center justify-center mb-2">
+                            <Image
+                              src={money.image}
+                              alt={`${money.value} lei`}
+                              width={120}
+                              height={60}
+                              className="object-contain max-w-full max-h-[80px]"
+                            />
+                          </div>
+                          <span className="text-lg font-bold text-[#E67E3B]">{money.value} lei</span>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Кнопки действий */}
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="flex justify-center gap-4">
+                        {selectedMoney.length > 0 && (
+                          <button
+                            onClick={removeLastMoney}
+                            className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-full shadow-lg transition-all"
+                          >
+                            ← Șterge ultima bancnotă
+                          </button>
+                        )}
+                        <button
+                          onClick={checkMoneyAnswer}
+                          className="px-12 py-3 bg-[#E67E3B] hover:bg-[#D66D2A] text-white font-bold rounded-full shadow-lg transition-all hover:scale-105"
+                        >
+                          Verifică plata
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
               )}
 
