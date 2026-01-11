@@ -238,7 +238,7 @@ export default function Nivel3Page() {
     return Array.from({ length: count }).map((_, i) => (
       <Image
         key={i}
-        src={`/images/ui/circle-${color}.png`}
+        src={`/images/ui/circle/circle-${color}.png`}
         alt={`${color} ball`}
         width={40}
         height={40}
@@ -444,7 +444,7 @@ export default function Nivel3Page() {
                               className="cursor-pointer hover:scale-110 transition-transform"
                             >
                               <Image
-                                src={`/images/ui/circle-${color}.png`}
+                                src={`/images/ui/circle/circle-${color}.png`}
                                 alt="ball"
                                 width={40}
                                 height={40}
@@ -472,7 +472,7 @@ export default function Nivel3Page() {
                               className="cursor-pointer hover:scale-110 transition-transform"
                             >
                               <Image
-                                src={`/images/ui/circle-${color}.png`}
+                                src={`/images/ui/circle/circle-${color}.png`}
                                 alt="ball"
                                 width={40}
                                 height={40}
@@ -497,7 +497,7 @@ export default function Nivel3Page() {
                             className="cursor-move hover:scale-110 transition-transform active:scale-95"
                           >
                             <Image
-                              src={`/images/ui/circle-${color}.png`}
+                              src={`/images/ui/circle/circle-${color}.png`}
                               alt={`${color} ball`}
                               width={60}
                               height={60}

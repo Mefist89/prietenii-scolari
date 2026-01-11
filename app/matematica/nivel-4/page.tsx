@@ -14,22 +14,16 @@ export default function Nivel4Page() {
   // Exercițiul 2: Două table de scădere (Descăzut - Scăzător = Diferență)
   const [ex2Answers, setEx2Answers] = useState(Array(6).fill('')); // 2 tables × 3 rows = 6 answers
 
-  // Exercițiul 3: 9 заданий - разложить число на Z și U (по 2 ответа на каждый вопрос = 18 ответов)
-  const [ex3Answers, setEx3Answers] = useState(Array(18).fill(''));
+  // Exercițiul 3: Задача с животными (2 таблицы × 3 животных = 6 ответов)
+  const [ex3Answers, setEx3Answers] = useState(Array(6).fill('')); // 2 tables × 3 animals = 6 answers
 
-  // Exercițiul 4: Мини-игра с перетаскиванием шариков
-  const [ex3CurrentIndex, setEx3CurrentIndex] = useState(0);
-  const [ex3TensBalls, setEx3TensBalls] = useState<string[]>([]); // Шарики на левой стороне (десятки)
-  const [ex3OnesBalls, setEx3OnesBalls] = useState<string[]>([]); // Шарики на правой стороне (единицы)
+  // Exercițiul 4: Таблица с птицами и черепахой (2 таблицы, 4+4 = 8 пропущенных значений)
+  const [ex4Answers, setEx4Answers] = useState(Array(8).fill('')); // 8 missing values
 
   // Проверка ответов
   const [isChecked, setIsChecked] = useState(false);
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
-
-  // Feedback модальное окно
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [feedbackType, setFeedbackType] = useState<'correct' | 'partial' | 'incorrect'>('correct');
 
   // Exercițiul 1: Două table de adunare
   // Table 1
@@ -69,35 +63,46 @@ export default function Nivel4Page() {
   const subtractTable1Correct = ['4', '3', '8']; // scăzător для 1й, scăzător для 2й, descăzut для 3й
   const subtractTable2Correct = ['7', '3', '6'];
 
-  // Exercițiul 3: Разложить число на десятки и единицы (дано число, найти Z и U)
-  const exercises2Data = [
-    // Блок 1
-    { number: 15, tens: '1', ones: '5', color: '#4CAF50' },
-    { number: 20, tens: '2', ones: '0', color: '#4CAF50' },
-    { number: 18, tens: '1', ones: '8', color: '#4CAF50' },
-    // Блок 2
-    { number: 32, tens: '3', ones: '2', color: '#FF9800' },
-    { number: 27, tens: '2', ones: '7', color: '#FF9800' },
-    { number: 40, tens: '4', ones: '0', color: '#FF9800' },
-    // Блок 3
-    { number: 19, tens: '1', ones: '9', color: '#9C27B0' },
-    { number: 35, tens: '3', ones: '5', color: '#9C27B0' },
-    { number: 26, tens: '2', ones: '6', color: '#9C27B0' },
+  // Exercițiul 3: Задача с животными (Erau + Au venit = În total)
+  // Table 1
+  const animalsTable1Data = [
+    { animal: 'gepard', image: '/images/ui/animals/gepard.png', erau: 5, auVenit: 2, total: 7 },
+    { animal: 'kenguru', image: '/images/ui/animals/kenguru.png', erau: 3, auVenit: 2, total: 5 },
+    { animal: 'snake', image: '/images/ui/animals/snake.png', erau: 2, auVenit: 4, total: 6 },
   ];
 
-  // Exercițiul 3: Мини-игра - числа для расстановки шариков (7 уровней)
-  const exercises3Data = [
-    { number: 23, tens: 2, ones: 3, color: '#4CAF50' },
-    { number: 45, tens: 4, ones: 5, color: '#FF9800' },
-    { number: 17, tens: 1, ones: 7, color: '#9C27B0' },
-    { number: 30, tens: 3, ones: 0, color: '#2196F3' },
-    { number: 52, tens: 5, ones: 2, color: '#F44336' },
-    { number: 64, tens: 6, ones: 4, color: '#00BCD4' },
-    { number: 18, tens: 1, ones: 8, color: '#FF5722' },
+  // Table 2
+  const animalsTable2Data = [
+    { animal: 'lion', image: '/images/ui/animals/lion.png', erau: 4, auVenit: 3, total: null, answerIndex: 2 }, // заполняем În total (4+3=7)
+    { animal: 'zebra', image: '/images/ui/animals/zebra.png', erau: 6, auVenit: null, total: 9, answerIndex: 1 }, // заполняем Au venit (9-6=3)
+    { animal: 'straus', image: '/images/ui/animals/straus.png', erau: null, auVenit: 5, total: 6, answerIndex: 0 }, // заполняем Erau (6-5=1)
   ];
 
-  // Доступные цвета шариков в коробке
-  const availableBallColors = ['red', 'green', 'blue', 'orange', 'purple'];
+  // Правильные ответы для Exercițiul 3
+  const animalsTable1Correct = ['7', '5', '6'];
+  const animalsTable2Correct = ['7', '3', '1'];
+
+  // Exercițiul 4: Таблица с птицами и черепахой
+  // Erau - Au plecat = Au rămas
+  // Table 1
+  const birdsTable1Data = [
+    { animal: 'yellow-bird', image: '/images/ui/animals/yellow-bird.png', erau: 5, auPlecat: null, auRamas: 2 }, // заполняем Au plecat (5-2=3)
+    { animal: 'turtle', image: '/images/ui/animals/turtle.png', erau: 3, auPlecat: 2, auRamas: null }, // заполняем Au rămas (3-2=1)
+    { animal: 'straus', image: '/images/ui/animals/straus.png', erau: null, auPlecat: null, auRamas: 4 }, // заполняем Erau и Au plecat
+  ];
+
+  // Table 2
+  const birdsTable2Data = [
+    { animal: 'Bird-red', image: '/images/ui/animals/Bird-red.png', erau: 6, auPlecat: null, auRamas: 3 }, // заполняем Au plecat (6-3=3)
+    { animal: 'koala', image: '/images/ui/animals/koala.png', erau: 4, auPlecat: 1, auRamas: null }, // заполняем Au rămas (4-1=3)
+    { animal: 'dog', image: '/images/ui/animals/dog.png', erau: null, auPlecat: null, auRamas: 5 }, // заполняем Erau и Au plecat
+  ];
+
+  // Правильные ответы для Exercițiul 4
+  // Table 1: [yellow-bird.auPlecat, turtle.auRamas, straus.erau, straus.auPlecat]
+  const birdsTable1Correct = ['3', '1', '2', '1'];
+  // Table 2: [Bird-red.auPlecat, koala.auRamas, dog.erau, dog.auPlecat]
+  const birdsTable2Correct = ['3', '3', '2', '1'];
 
   const handleEx1Change = (index: number, value: string) => {
     if (isChecked) return;
@@ -126,91 +131,13 @@ export default function Nivel4Page() {
     }
   };
 
-  // Функции для Exercițiul 3 (мини-игра с drag-and-drop)
-  const handleDragStart = (e: React.DragEvent, color: string) => {
-    if (isChecked) {
-      e.preventDefault();
-      return;
+  const handleEx4Change = (index: number, value: string) => {
+    if (isChecked) return;
+    if (value === '' || /^\d+$/.test(value)) {
+      const newAnswers = [...ex4Answers];
+      newAnswers[index] = value;
+      setEx4Answers(newAnswers);
     }
-    e.dataTransfer.setData('ballColor', color);
-    e.dataTransfer.effectAllowed = 'copy';
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    if (isChecked) return;
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
-  };
-
-  const handleDropOnTens = (e: React.DragEvent) => {
-    if (isChecked) return;
-    e.preventDefault();
-    const color = e.dataTransfer.getData('ballColor');
-    if (color) {
-      setEx3TensBalls([...ex3TensBalls, color]);
-    }
-  };
-
-  const handleDropOnOnes = (e: React.DragEvent) => {
-    if (isChecked) return;
-    e.preventDefault();
-    const color = e.dataTransfer.getData('ballColor');
-    if (color) {
-      setEx3OnesBalls([...ex3OnesBalls, color]);
-    }
-  };
-
-  const addBallToTens = (color: string) => {
-    if (isChecked) return;
-    setEx3TensBalls([...ex3TensBalls, color]);
-  };
-
-  const addBallToOnes = (color: string) => {
-    if (isChecked) return;
-    setEx3OnesBalls([...ex3OnesBalls, color]);
-  };
-
-  const removeBallFromTens = (index: number) => {
-    if (isChecked) return;
-    setEx3TensBalls(ex3TensBalls.filter((_, i) => i !== index));
-  };
-
-  const removeBallFromOnes = (index: number) => {
-    if (isChecked) return;
-    setEx3OnesBalls(ex3OnesBalls.filter((_, i) => i !== index));
-  };
-
-  const checkEx3Current = () => {
-    const current = exercises3Data[ex3CurrentIndex];
-    const correctTens = ex3TensBalls.length === current.tens;
-    const correctOnes = ex3OnesBalls.length === current.ones;
-
-    if (correctTens && correctOnes) {
-      // Правильно! Показываем feedback и переходим к следующему
-      setFeedbackType('correct');
-      setShowFeedback(true);
-
-      setTimeout(() => {
-        setShowFeedback(false);
-        if (ex3CurrentIndex < exercises3Data.length - 1) {
-          setEx3CurrentIndex(ex3CurrentIndex + 1);
-          setEx3TensBalls([]);
-          setEx3OnesBalls([]);
-        }
-      }, 2000);
-
-      return 2; // Оба правильны
-    } else if (correctTens || correctOnes) {
-      setFeedbackType('partial');
-      setShowFeedback(true);
-      setTimeout(() => setShowFeedback(false), 2000);
-      return 1; // Одно правильно
-    }
-
-    setFeedbackType('incorrect');
-    setShowFeedback(true);
-    setTimeout(() => setShowFeedback(false), 2000);
-    return 0; // Оба неправильны
   };
 
   const checkAnswers = () => {
@@ -238,22 +165,27 @@ export default function Nivel4Page() {
       if (ex2Answers[i + 3] === correct) correctCount++;
     });
 
-    // Проверка Exercițiul 3 - Z și U (для каждого числа 2 ответа: десятки и единицы)
-    exercises2Data.forEach((ex, i) => {
-      const tensIndex = i * 2;
-      const onesIndex = i * 2 + 1;
-      if (ex3Answers[tensIndex] === ex.tens) correctCount++;
-      if (ex3Answers[onesIndex] === ex.ones) correctCount++;
+    // Проверка Exercițiul 3 - Animale (2 таблицы × 3 животных = 6 ответов)
+    // Table 1 (индексы 0-2)
+    animalsTable1Correct.forEach((correct, i) => {
+      if (ex3Answers[i] === correct) correctCount++;
     });
 
-    // Проверка Exercițiul 4 (мини-игра)
-    // Проверяем текущий прогресс: за каждый пройденный уровень +2 балла
-    correctCount += ex3CurrentIndex * 2;
+    // Table 2 (индексы 3-5)
+    animalsTable2Correct.forEach((correct, i) => {
+      if (ex3Answers[i + 3] === correct) correctCount++;
+    });
 
-    // Проверяем текущий уровень
-    const current = exercises3Data[ex3CurrentIndex];
-    if (ex3TensBalls.length === current.tens) correctCount++;
-    if (ex3OnesBalls.length === current.ones) correctCount++;
+    // Проверка Exercițiul 4 - Птицы и черепаха (2 таблицы × 4 ответа = 8 ответов)
+    // Table 1 (индексы 0-3)
+    birdsTable1Correct.forEach((correct, i) => {
+      if (ex4Answers[i] === correct) correctCount++;
+    });
+
+    // Table 2 (индексы 4-7)
+    birdsTable2Correct.forEach((correct, i) => {
+      if (ex4Answers[i + 4] === correct) correctCount++;
+    });
 
     setScore(correctCount);
     setIsChecked(true);
@@ -263,10 +195,8 @@ export default function Nivel4Page() {
   const resetAnswers = () => {
     setEx1Answers(Array(6).fill(''));
     setEx2Answers(Array(6).fill(''));
-    setEx3Answers(Array(18).fill(''));
-    setEx3CurrentIndex(0);
-    setEx3TensBalls([]);
-    setEx3OnesBalls([]);
+    setEx3Answers(Array(6).fill(''));
+    setEx4Answers(Array(8).fill(''));
     setIsChecked(false);
     setScore(0);
     setShowResults(false);
@@ -286,7 +216,7 @@ export default function Nivel4Page() {
     return (
       <ResultsPage
         score={score}
-        totalQuestions={44}
+        totalQuestions={26}
         levelName="Nivel 4"
         onRetry={resetAnswers}
         nextLevelPath="/matematica/nivel-5"
@@ -294,20 +224,6 @@ export default function Nivel4Page() {
       />
     );
   }
-
-  // Функция для отрисовки шариков
-  const renderBalls = (count: number, color: string) => {
-    return Array.from({ length: count }).map((_, i) => (
-      <Image
-        key={i}
-        src={`/images/ui/circle-${color}.png`}
-        alt={`${color} ball`}
-        width={40}
-        height={40}
-        className="object-contain"
-      />
-    ));
-  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -338,7 +254,7 @@ export default function Nivel4Page() {
                 />
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-[#E67E3B] mb-2">Nivel 4</h1>
-              <p className="text-xl md:text-2xl text-[#8B7355]">Adunare și Zeci-Unități</p>
+              <p className="text-xl md:text-2xl text-[#8B7355]">Adunare și Scădere</p>
             </div>
 
             <div className="space-y-8">
@@ -346,7 +262,7 @@ export default function Nivel4Page() {
               <div className="bg-[#FFF3D6] p-6 rounded-xl border-2 border-[#F4D35E]">
                 <h2 className="text-2xl font-bold text-[#E67E3B] mb-4">📚 Ce vei învăța:</h2>
                 <p className="text-lg text-gray-700">
-                  Învățăm adunarea, scăderea și să descompunem numerele! Vei completa tabele de adunare, tabele de scădere și vei învăța să împarți numerele în zeci (Z) și unități (U). De exemplu: 23 = 2 zeci + 3 unități!
+                  Învățăm adunarea și scăderea! Vei completa tabele de adunare, tabele de scădere și vei rezolva probleme cu animale.
                 </p>
               </div>
 
@@ -656,203 +572,410 @@ export default function Nivel4Page() {
                 </div>
               </div>
 
-              {/* Exercițiul 3 - Z și U */}
-              <div className="bg-[#E8F8F8] p-8 rounded-2xl border-4 border-[#95D9DD]">
-                <h3 className="text-2xl font-bold text-[#5A8FA8] mb-6">Exercițiul 3: Descompune numerele în Zeci și Unități</h3>
+              {/* Exercițiul 3 - Tabel cu animale */}
+              <div className="bg-[#FFE8D6] p-8 rounded-2xl border-4 border-[#FFA94D]">
+                <h3 className="text-2xl font-bold text-[#E67E3B] mb-6">Exercițiul 3: Numără animalele</h3>
                 <p className="text-lg text-gray-700 mb-6 text-center">
-                  Găsește câte zeci (Z) și câte unități (U) are fiecare număr!
+                  Rezolvă problemele cu animale! Erau + Au venit = În total
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {exercises2Data.map((exercise, index) => {
-                    const tensIndex = index * 2;
-                    const onesIndex = index * 2 + 1;
 
-                    return (
-                      <div key={index} className="bg-white p-6 rounded-xl shadow-md">
-                        {/* Число вверху */}
-                        <div
-                          className="mb-4 p-4 rounded-lg flex items-center justify-center"
-                          style={{ backgroundColor: exercise.color }}
-                        >
-                          <span className="text-5xl font-bold text-white">{exercise.number}</span>
-                        </div>
+                <div className="space-y-8">
+                  {/* Table 1 */}
+                  <div className="bg-white p-6 rounded-xl shadow-md">
+                    <h4 className="text-xl font-bold text-[#E67E3B] mb-4 text-center">Tabel 1</h4>
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-[#5A8FA8] text-white">
+                            <th className="border-4 border-gray-800 p-4"></th>
+                            {animalsTable1Data.map((animal, i) => (
+                              <th key={i} className="border-4 border-gray-800 p-4">
+                                <div className="flex justify-center">
+                                  <Image
+                                    src={animal.image}
+                                    alt={animal.animal}
+                                    width={80}
+                                    height={80}
+                                    className="object-contain"
+                                  />
+                                </div>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* Erau */}
+                          <tr>
+                            <td className="border-4 border-gray-800 p-4 bg-[#5A8FA8] text-white font-bold text-xl">
+                              Erau
+                            </td>
+                            {animalsTable1Data.map((animal, i) => (
+                              <td key={i} className="border-4 border-gray-800 p-4 text-center">
+                                <div className="text-3xl font-bold text-gray-800">{animal.erau}</div>
+                              </td>
+                            ))}
+                          </tr>
 
-                        {/* Таблица Z и U */}
-                        <div className="flex justify-center gap-2 mb-4">
-                          <div className="w-20 h-20 border-4 border-gray-800 bg-white flex items-center justify-center">
-                            <span className="text-2xl font-bold text-gray-800">Z</span>
-                          </div>
-                          <div className="w-20 h-20 border-4 border-gray-800 bg-white flex items-center justify-center">
-                            <span className="text-2xl font-bold text-gray-800">U</span>
-                          </div>
-                        </div>
+                          {/* Au venit */}
+                          <tr>
+                            <td className="border-4 border-gray-800 p-4 bg-[#5A8FA8] text-white font-bold text-xl">
+                              Au venit
+                            </td>
+                            {animalsTable1Data.map((animal, i) => (
+                              <td key={i} className="border-4 border-gray-800 p-4 text-center">
+                                <div className="text-3xl font-bold text-gray-800">{animal.auVenit}</div>
+                              </td>
+                            ))}
+                          </tr>
 
-                        {/* Квадраты для ответов */}
-                        <div className="flex justify-center gap-2">
-                          {/* Желтый квадрат для десятков */}
-                          <div className="w-24 h-24 bg-[#FFC107] flex items-center justify-center rounded-lg border-4 border-gray-800">
-                            <input
-                              type="text"
-                              value={ex3Answers[tensIndex]}
-                              onChange={(e) => handleEx3Change(tensIndex, e.target.value)}
-                              maxLength={1}
-                              disabled={isChecked}
-                              className={`w-16 h-16 text-center text-4xl font-bold bg-white rounded-md ${getInputClass(ex3Answers[tensIndex], exercise.tens)}`}
-                            />
-                          </div>
+                          {/* În total */}
+                          <tr>
+                            <td className="border-4 border-gray-800 p-4 bg-[#5A8FA8] text-white font-bold text-xl">
+                              În total
+                            </td>
+                            {animalsTable1Data.map((animal, i) => (
+                              <td key={i} className="border-4 border-gray-800 p-4 text-center">
+                                <input
+                                  type="text"
+                                  value={ex3Answers[i]}
+                                  onChange={(e) => handleEx3Change(i, e.target.value)}
+                                  maxLength={2}
+                                  disabled={isChecked}
+                                  className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex3Answers[i], animalsTable1Correct[i])}`}
+                                />
+                              </td>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
 
-                          {/* Синий квадрат для единиц */}
-                          <div className="w-24 h-24 bg-[#5A8FA8] flex items-center justify-center rounded-lg border-4 border-gray-800">
-                            <input
-                              type="text"
-                              value={ex3Answers[onesIndex]}
-                              onChange={(e) => handleEx3Change(onesIndex, e.target.value)}
-                              maxLength={1}
-                              disabled={isChecked}
-                              className={`w-16 h-16 text-center text-4xl font-bold bg-white rounded-md ${getInputClass(ex3Answers[onesIndex], exercise.ones)}`}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {/* Table 2 */}
+                  <div className="bg-white p-6 rounded-xl shadow-md">
+                    <h4 className="text-xl font-bold text-[#E67E3B] mb-4 text-center">Tabel 2</h4>
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-[#5A8FA8] text-white">
+                            <th className="border-4 border-gray-800 p-4"></th>
+                            {animalsTable2Data.map((animal, i) => (
+                              <th key={i} className="border-4 border-gray-800 p-4">
+                                <div className="flex justify-center">
+                                  <Image
+                                    src={animal.image}
+                                    alt={animal.animal}
+                                    width={80}
+                                    height={80}
+                                    className="object-contain"
+                                  />
+                                </div>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* Erau */}
+                          <tr>
+                            <td className="border-4 border-gray-800 p-4 bg-[#5A8FA8] text-white font-bold text-xl">
+                              Erau
+                            </td>
+                            {animalsTable2Data.map((animal, i) => {
+                              const answerIndex = i + 3;
+                              return (
+                                <td key={i} className="border-4 border-gray-800 p-4 text-center">
+                                  {animal.answerIndex === 0 ? (
+                                    <input
+                                      type="text"
+                                      value={ex3Answers[answerIndex]}
+                                      onChange={(e) => handleEx3Change(answerIndex, e.target.value)}
+                                      maxLength={2}
+                                      disabled={isChecked}
+                                      className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex3Answers[answerIndex], animalsTable2Correct[i])}`}
+                                    />
+                                  ) : (
+                                    <div className="text-3xl font-bold text-gray-800">{animal.erau}</div>
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+
+                          {/* Au venit */}
+                          <tr>
+                            <td className="border-4 border-gray-800 p-4 bg-[#5A8FA8] text-white font-bold text-xl">
+                              Au venit
+                            </td>
+                            {animalsTable2Data.map((animal, i) => {
+                              const answerIndex = i + 3;
+                              return (
+                                <td key={i} className="border-4 border-gray-800 p-4 text-center">
+                                  {animal.answerIndex === 1 ? (
+                                    <input
+                                      type="text"
+                                      value={ex3Answers[answerIndex]}
+                                      onChange={(e) => handleEx3Change(answerIndex, e.target.value)}
+                                      maxLength={2}
+                                      disabled={isChecked}
+                                      className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex3Answers[answerIndex], animalsTable2Correct[i])}`}
+                                    />
+                                  ) : (
+                                    <div className="text-3xl font-bold text-gray-800">{animal.auVenit}</div>
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+
+                          {/* În total */}
+                          <tr>
+                            <td className="border-4 border-gray-800 p-4 bg-[#5A8FA8] text-white font-bold text-xl">
+                              În total
+                            </td>
+                            {animalsTable2Data.map((animal, i) => {
+                              const answerIndex = i + 3; // Table 2 uses indices 3-5
+                              return (
+                                <td key={i} className="border-4 border-gray-800 p-4 text-center">
+                                  {animal.answerIndex === 2 ? (
+                                    <input
+                                      type="text"
+                                      value={ex3Answers[answerIndex]}
+                                      onChange={(e) => handleEx3Change(answerIndex, e.target.value)}
+                                      maxLength={2}
+                                      disabled={isChecked}
+                                      className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex3Answers[answerIndex], animalsTable2Correct[i])}`}
+                                    />
+                                  ) : (
+                                    <div className="text-3xl font-bold text-gray-800">{animal.total}</div>
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Exercițiul 4 - Мини-игра cu bile */}
+              {/* Exercițiul 4 - Tabel cu păsări și broască țestoasă */}
               <div className="bg-[#E8F5E8] p-8 rounded-2xl border-4 border-[#A8D5A8]">
-                <h3 className="text-2xl font-bold text-[#5A9C5C] mb-6">Exercițiul 4: Jocul cu bile</h3>
+                <h3 className="text-2xl font-bold text-[#5A9C5C] mb-6">Exercițiul 4: Completează tabelul</h3>
+                <p className="text-lg text-gray-700 mb-6 text-center">
+                  Erau - Au plecat = Au rămas. Găsește valorile lipsă!
+                </p>
 
-                {ex3CurrentIndex < exercises3Data.length ? (
-                  <div className="bg-white p-8 rounded-xl shadow-md">
-                    {/* Прогресс */}
-                    <div className="mb-6 text-center">
-                      <p className="text-xl font-bold text-gray-700">
-                        Nivel {ex3CurrentIndex + 1} din {exercises3Data.length}
-                      </p>
-                    </div>
-
-                    {/* Число */}
-                    <div
-                      className="mb-8 p-6 rounded-lg flex items-center justify-center"
-                      style={{ backgroundColor: exercises3Data[ex3CurrentIndex].color }}
-                    >
-                      <span className="text-7xl font-bold text-white">
-                        {exercises3Data[ex3CurrentIndex].number}
-                      </span>
-                    </div>
-
-                    <p className="text-xl text-center mb-6 text-gray-700 font-semibold">
-                      Pune bilele pe masă! Stânga = Zeci (Z), Dreapta = Unități (U)
-                    </p>
-
-                    {/* Стол с двумя сторонами */}
-                    <div className="grid grid-cols-2 gap-4 mb-8 bg-[#8B7355] p-6 rounded-xl">
-                      {/* Левая сторона - Десятки */}
-                      <div
-                        onDragOver={handleDragOver}
-                        onDrop={handleDropOnTens}
-                        className="bg-yellow-200 p-4 rounded-lg border-4 border-gray-800 min-h-[200px] transition-all hover:bg-yellow-300"
-                      >
-                        <div className="text-center mb-4">
-                          <span className="text-3xl font-bold text-gray-800">Z (Zeci)</span>
-                        </div>
-                        <div className="flex flex-wrap gap-2 justify-center min-h-[100px]">
-                          {ex3TensBalls.map((color, i) => (
-                            <div
-                              key={i}
-                              onClick={() => removeBallFromTens(i)}
-                              className="cursor-pointer hover:scale-110 transition-transform"
-                            >
-                              <Image
-                                src={`/images/ui/circle-${color}.png`}
-                                alt="ball"
-                                width={40}
-                                height={40}
-                              />
-                            </div>
+                <div className="space-y-8">
+                  {/* Table 1 */}
+                  <div className="bg-white p-6 rounded-xl shadow-md">
+                    <h4 className="text-xl font-bold text-[#5A9C5C] mb-4 text-center">Tabel 1</h4>
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-[#5A9C5C] text-white">
+                            <th className="border-4 border-gray-800 p-4"></th>
+                            {birdsTable1Data.map((bird, i) => (
+                            <th key={i} className="border-4 border-gray-800 p-4">
+                              <div className="flex justify-center">
+                                <Image
+                                  src={bird.image}
+                                  alt={bird.animal}
+                                  width={80}
+                                  height={80}
+                                  className="object-contain"
+                                />
+                              </div>
+                            </th>
                           ))}
-                        </div>
-                        <p className="text-center mt-2 text-sm text-gray-600">Trage bilele aici sau apasă să ștergi</p>
-                      </div>
-
-                      {/* Правая сторона - Единицы */}
-                      <div
-                        onDragOver={handleDragOver}
-                        onDrop={handleDropOnOnes}
-                        className="bg-blue-200 p-4 rounded-lg border-4 border-gray-800 min-h-[200px] transition-all hover:bg-blue-300"
-                      >
-                        <div className="text-center mb-4">
-                          <span className="text-3xl font-bold text-gray-800">U (Unități)</span>
-                        </div>
-                        <div className="flex flex-wrap gap-2 justify-center min-h-[100px]">
-                          {ex3OnesBalls.map((color, i) => (
-                            <div
-                              key={i}
-                              onClick={() => removeBallFromOnes(i)}
-                              className="cursor-pointer hover:scale-110 transition-transform"
-                            >
-                              <Image
-                                src={`/images/ui/circle-${color}.png`}
-                                alt="ball"
-                                width={40}
-                                height={40}
-                              />
-                            </div>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Erau */}
+                        <tr>
+                          <td className="border-4 border-gray-800 p-4 bg-[#5A9C5C] text-white font-bold text-xl">
+                            Erau
+                          </td>
+                          {birdsTable1Data.map((bird, i) => (
+                            <td key={i} className="border-4 border-gray-800 p-4 text-center">
+                              {bird.erau !== null ? (
+                                <div className="text-3xl font-bold text-gray-800">{bird.erau}</div>
+                              ) : (
+                                <input
+                                  type="text"
+                                  value={ex4Answers[2]}
+                                  onChange={(e) => handleEx4Change(2, e.target.value)}
+                                  maxLength={2}
+                                  disabled={isChecked}
+                                  className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex4Answers[2], birdsTable1Correct[2])}`}
+                                />
+                              )}
+                            </td>
                           ))}
-                        </div>
-                        <p className="text-center mt-2 text-sm text-gray-600">Trage bilele aici sau apasă să ștergi</p>
-                      </div>
-                    </div>
+                        </tr>
 
-                    {/* Коробка с шариками */}
-                    <div className="bg-gradient-to-r from-[#8B7355] to-[#6B5345] p-6 rounded-xl border-4 border-gray-800">
-                      <p className="text-center text-2xl font-bold text-white mb-4">Cutia cu bile</p>
-                      <p className="text-center text-lg text-white/90 mb-4">Trage bilele pe masă</p>
-                      <div className="flex flex-wrap justify-center gap-6">
-                        {availableBallColors.map((color) => (
-                          <div
-                            key={color}
-                            draggable={!isChecked}
-                            onDragStart={(e) => handleDragStart(e, color)}
-                            className="cursor-move hover:scale-110 transition-transform active:scale-95"
-                          >
-                            <Image
-                              src={`/images/ui/circle-${color}.png`}
-                              alt={`${color} ball`}
-                              width={60}
-                              height={60}
-                              draggable={false}
+                        {/* Au plecat */}
+                        <tr>
+                          <td className="border-4 border-gray-800 p-4 bg-[#5A9C5C] text-white font-bold text-xl">
+                            Au plecat
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <input
+                              type="text"
+                              value={ex4Answers[0]}
+                              onChange={(e) => handleEx4Change(0, e.target.value)}
+                              maxLength={2}
+                              disabled={isChecked}
+                              className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex4Answers[0], birdsTable1Correct[0])}`}
                             />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <div className="text-3xl font-bold text-gray-800">{birdsTable1Data[1].auPlecat}</div>
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <input
+                              type="text"
+                              value={ex4Answers[3]}
+                              onChange={(e) => handleEx4Change(3, e.target.value)}
+                              maxLength={2}
+                              disabled={isChecked}
+                              className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex4Answers[3], birdsTable1Correct[3])}`}
+                            />
+                          </td>
+                        </tr>
 
-                    {/* Кнопка проверки текущего уровня */}
-                    {!isChecked && (
-                      <div className="mt-6 text-center">
-                        <button
-                          onClick={checkEx3Current}
-                          className="px-8 py-4 bg-[#5A9C5C] hover:bg-[#4A8C4C] text-white font-bold text-xl rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                        >
-                          Verifică răspunsul
-                        </button>
-                      </div>
-                    )}
+                        {/* Au rămas */}
+                        <tr>
+                          <td className="border-4 border-gray-800 p-4 bg-[#5A9C5C] text-white font-bold text-xl">
+                            Au rămas
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <div className="text-3xl font-bold text-gray-800">{birdsTable1Data[0].auRamas}</div>
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <input
+                              type="text"
+                              value={ex4Answers[1]}
+                              onChange={(e) => handleEx4Change(1, e.target.value)}
+                              maxLength={2}
+                              disabled={isChecked}
+                              className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex4Answers[1], birdsTable1Correct[1])}`}
+                            />
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <div className="text-3xl font-bold text-gray-800">{birdsTable1Data[2].auRamas}</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                ) : (
-                  <div className="bg-white p-8 rounded-xl shadow-md text-center">
-                    <div className="text-6xl mb-4">🏆</div>
-                    <h3 className="text-3xl font-bold text-[#5A9C5C] mb-4">
-                      Felicitări! Ai terminat toate nivelurile!
-                    </h3>
-                    <p className="text-xl text-gray-700">
-                      Apasă pe "Verifică răspunsurile" pentru a vedea rezultatul final!
-                    </p>
+                </div>
+
+                {/* Table 2 */}
+                <div className="bg-white p-6 rounded-xl shadow-md">
+                  <h4 className="text-xl font-bold text-[#5A9C5C] mb-4 text-center">Tabel 2</h4>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="bg-[#5A9C5C] text-white">
+                          <th className="border-4 border-gray-800 p-4"></th>
+                          {birdsTable2Data.map((bird, i) => (
+                            <th key={i} className="border-4 border-gray-800 p-4">
+                              <div className="flex justify-center">
+                                <Image
+                                  src={bird.image}
+                                  alt={bird.animal}
+                                  width={80}
+                                  height={80}
+                                  className="object-contain"
+                                />
+                              </div>
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Erau */}
+                        <tr>
+                          <td className="border-4 border-gray-800 p-4 bg-[#5A9C5C] text-white font-bold text-xl">
+                            Erau
+                          </td>
+                          {birdsTable2Data.map((bird, i) => (
+                            <td key={i} className="border-4 border-gray-800 p-4 text-center">
+                              {bird.erau !== null ? (
+                                <div className="text-3xl font-bold text-gray-800">{bird.erau}</div>
+                              ) : (
+                                <input
+                                  type="text"
+                                  value={ex4Answers[6]}
+                                  onChange={(e) => handleEx4Change(6, e.target.value)}
+                                  maxLength={2}
+                                  disabled={isChecked}
+                                  className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex4Answers[6], birdsTable2Correct[2])}`}
+                                />
+                              )}
+                            </td>
+                          ))}
+                        </tr>
+
+                        {/* Au plecat */}
+                        <tr>
+                          <td className="border-4 border-gray-800 p-4 bg-[#5A9C5C] text-white font-bold text-xl">
+                            Au plecat
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <input
+                              type="text"
+                              value={ex4Answers[4]}
+                              onChange={(e) => handleEx4Change(4, e.target.value)}
+                              maxLength={2}
+                              disabled={isChecked}
+                              className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex4Answers[4], birdsTable2Correct[0])}`}
+                            />
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <div className="text-3xl font-bold text-gray-800">{birdsTable2Data[1].auPlecat}</div>
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <input
+                              type="text"
+                              value={ex4Answers[7]}
+                              onChange={(e) => handleEx4Change(7, e.target.value)}
+                              maxLength={2}
+                              disabled={isChecked}
+                              className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex4Answers[7], birdsTable2Correct[3])}`}
+                            />
+                          </td>
+                        </tr>
+
+                        {/* Au rămas */}
+                        <tr>
+                          <td className="border-4 border-gray-800 p-4 bg-[#5A9C5C] text-white font-bold text-xl">
+                            Au rămas
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <div className="text-3xl font-bold text-gray-800">{birdsTable2Data[0].auRamas}</div>
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <input
+                              type="text"
+                              value={ex4Answers[5]}
+                              onChange={(e) => handleEx4Change(5, e.target.value)}
+                              maxLength={2}
+                              disabled={isChecked}
+                              className={`w-20 h-16 text-center text-3xl font-bold rounded-md ${getInputClass(ex4Answers[5], birdsTable2Correct[1])}`}
+                            />
+                          </td>
+                          <td className="border-4 border-gray-800 p-4 text-center">
+                            <div className="text-3xl font-bold text-gray-800">{birdsTable2Data[2].auRamas}</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                )}
+                </div>
               </div>
+            </div>
 
               {/* Кнопки навигации и действий */}
               <div className="flex flex-wrap justify-center gap-4 mt-8">
@@ -880,60 +1003,6 @@ export default function Nivel4Page() {
         </div>
       </div>
 
-      {/* Feedback Modal */}
-      {showFeedback && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className={`
-            transform transition-all duration-300 ease-out
-            ${showFeedback ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}
-            bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md mx-4
-            ${feedbackType === 'correct' ? 'border-8 border-green-400' : ''}
-            ${feedbackType === 'partial' ? 'border-8 border-yellow-400' : ''}
-            ${feedbackType === 'incorrect' ? 'border-8 border-orange-400' : ''}
-          `}>
-            <div className="text-center">
-              {/* Emoji */}
-              <div className="text-8xl mb-4 animate-bounce">
-                {feedbackType === 'correct' && '🎉'}
-                {feedbackType === 'partial' && '⚠️'}
-                {feedbackType === 'incorrect' && '💪'}
-              </div>
-
-              {/* Сообщение */}
-              <h3 className={`text-3xl font-bold mb-4 ${
-                feedbackType === 'correct' ? 'text-green-600' :
-                feedbackType === 'partial' ? 'text-yellow-600' :
-                'text-orange-600'
-              }`}>
-                {feedbackType === 'correct' && 'Corect!'}
-                {feedbackType === 'partial' && 'Aproape!'}
-                {feedbackType === 'incorrect' && 'Încearcă din nou!'}
-              </h3>
-
-              <p className="text-xl text-gray-700">
-                {feedbackType === 'correct' && 'Mergi la următorul nivel!'}
-                {feedbackType === 'partial' && 'Verifică din nou numărul de bile.'}
-                {feedbackType === 'incorrect' && 'Numără bilele corect.'}
-              </p>
-
-              {/* Звездочки для правильного ответа */}
-              {feedbackType === 'correct' && (
-                <div className="mt-6 flex justify-center gap-2">
-                  {[...Array(5)].map((_, i) => (
-                    <span
-                      key={i}
-                      className="text-4xl animate-pulse"
-                      style={{ animationDelay: `${i * 0.1}s` }}
-                    >
-                      ⭐
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
