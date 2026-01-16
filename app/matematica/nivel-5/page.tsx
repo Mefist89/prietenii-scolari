@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import ResultsPage from '@/components/ResultsPage';
 
 export default function Nivel5Page() {
@@ -77,6 +78,25 @@ export default function Nivel5Page() {
   // Для четвертого задания со сдачей
   const [selectedChange, setSelectedChange] = useState<number[]>([]);
 
+  // Для уведомлений
+  const [notification, setNotification] = useState<{
+    show: boolean;
+    type: 'success' | 'error';
+    message: string;
+  }>({
+    show: false,
+    type: 'success',
+    message: '',
+  });
+
+  // Показать уведомление
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    setNotification({ show: true, type, message });
+    setTimeout(() => {
+      setNotification({ show: false, type: 'success', message: '' });
+    }, 2500);
+  };
+
   // Вычисляем вес стороны
   const calculateWeight = (fruits: string[]) => {
     return fruits.reduce((sum, fruit) => sum + fruitWeights[fruit as keyof typeof fruitWeights], 0);
@@ -122,20 +142,23 @@ export default function Nivel5Page() {
     if (leftWeight === rightWeight) {
       // Правильно!
       setScore(score + 1);
+      showNotification('success', 'Excelent! Balanța este echilibrată! 🎉');
 
-      if (currentExercise < allExercises.length - 1) {
-        // Переходим к следующему упражнению
-        setCurrentExercise(currentExercise + 1);
-        setRightSide([]);
-        setUserAnswer('');
-        setCompletedExercises(completedExercises + 1);
-      } else {
-        // Все упражнения завершены
-        setShowResults(true);
-      }
+      setTimeout(() => {
+        if (currentExercise < allExercises.length - 1) {
+          // Переходим к следующему упражнению
+          setCurrentExercise(currentExercise + 1);
+          setRightSide([]);
+          setUserAnswer('');
+          setCompletedExercises(completedExercises + 1);
+        } else {
+          // Все упражнения завершены
+          setShowResults(true);
+        }
+      }, 1500);
     } else {
-      // Неправильно - показываем алерт
-      alert('Весы не сбалансированы! Попробуй еще раз.');
+      // Неправильно - показываем уведомление
+      showNotification('error', 'Balanța nu este echilibrată! Încearcă din nou.');
     }
   };
 
@@ -150,20 +173,23 @@ export default function Nivel5Page() {
     if (userPrice === totalPrice) {
       // Правильно!
       setScore(score + 1);
+      showNotification('success', 'Bravo! Prețul este corect! 🌟');
 
-      if (currentExercise < allExercises.length - 1) {
-        // Переходим к следующему упражнению
-        setCurrentExercise(currentExercise + 1);
-        setUserAnswer('');
-        setRightSide([]);
-        setCompletedExercises(completedExercises + 1);
-      } else {
-        // Все упражнения завершены
-        setShowResults(true);
-      }
+      setTimeout(() => {
+        if (currentExercise < allExercises.length - 1) {
+          // Переходим к следующему упражнению
+          setCurrentExercise(currentExercise + 1);
+          setUserAnswer('');
+          setRightSide([]);
+          setCompletedExercises(completedExercises + 1);
+        } else {
+          // Все упражнения завершены
+          setShowResults(true);
+        }
+      }, 1500);
     } else {
       // Неправильно
-      alert('Preț incorect! Verifică din nou.');
+      showNotification('error', 'Preț incorect! Verifică din nou.');
     }
   };
 
@@ -178,23 +204,26 @@ export default function Nivel5Page() {
     if (totalMoney >= requiredPrice) {
       // Правильно - достаточно денег!
       setScore(score + 1);
+      showNotification('success', 'Perfect! Ai ales bancnotele potrivite! 💰');
 
-      if (currentExercise < allExercises.length - 1) {
-        // Переходим к следующему упражнению
-        setCurrentExercise(currentExercise + 1);
-        setSelectedMoney([]);
-        setRightSide([]);
-        setUserAnswer('');
-        setCompletedExercises(completedExercises + 1);
-        setShowFruit(false);
-        setShowMoney(false);
-      } else {
-        // Все упражнения завершены
-        setShowResults(true);
-      }
+      setTimeout(() => {
+        if (currentExercise < allExercises.length - 1) {
+          // Переходим к следующему упражнению
+          setCurrentExercise(currentExercise + 1);
+          setSelectedMoney([]);
+          setRightSide([]);
+          setUserAnswer('');
+          setCompletedExercises(completedExercises + 1);
+          setShowFruit(false);
+          setShowMoney(false);
+        } else {
+          // Все упражнения завершены
+          setShowResults(true);
+        }
+      }, 1500);
     } else {
       // Неправильно - недостаточно денег
-      alert('Nu sunt suficienți bani! Adaugă mai multe bancnote.');
+      showNotification('error', 'Nu sunt suficienți bani! Adaugă mai multe bancnote.');
     }
   };
 
@@ -221,9 +250,10 @@ export default function Nivel5Page() {
       if (requiredChange === 0) {
         // Правильно - сдачи действительно нет
         setScore(score + 1);
-        moveToNextExercise();
+        showNotification('success', 'Corect! Nu este nevoie de rest! ✅');
+        setTimeout(() => moveToNextExercise(), 1500);
       } else {
-        alert('Неправильно! Нужна сдача.');
+        showNotification('error', 'Incorect! Este necesar rest.');
       }
       return;
     }
@@ -232,9 +262,10 @@ export default function Nivel5Page() {
     if (userChange === requiredChange) {
       // Правильно!
       setScore(score + 1);
-      moveToNextExercise();
+      showNotification('success', 'Excelent! Restul este corect! 💵');
+      setTimeout(() => moveToNextExercise(), 1500);
     } else {
-      alert('Restul este incorect! Verifică din nou.');
+      showNotification('error', 'Restul este incorect! Verifică din nou.');
     }
   };
 
@@ -820,6 +851,54 @@ export default function Nivel5Page() {
           </div>
         </div>
       </div>
+
+      {/* Уведомление */}
+      <AnimatePresence>
+        {notification.show && (
+          <motion.div
+            initial={{ opacity: 0, y: -100, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -100, scale: 0.8 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="fixed top-8 left-1/2 -translate-x-1/2 z-50 max-w-md w-full mx-4"
+          >
+            <motion.div
+              animate={
+                notification.type === 'error'
+                  ? { x: [-10, 10, -10, 10, 0] }
+                  : { scale: [1, 1.05, 1] }
+              }
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className={`rounded-3xl p-6 shadow-2xl border-4 ${
+                notification.type === 'success'
+                  ? 'bg-gradient-to-r from-green-100 to-green-200 border-green-500'
+                  : 'bg-gradient-to-r from-red-100 to-red-200 border-red-500'
+              }`}
+            >
+              <div className="flex items-center gap-4">
+                <motion.div
+                  animate={{ rotate: [0, -10, 10, -10, 0] }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="text-5xl"
+                >
+                  {notification.type === 'success' ? '🎉' : '😢'}
+                </motion.div>
+                <div className="flex-1">
+                  <p
+                    className={`text-xl font-bold ${
+                      notification.type === 'success'
+                        ? 'text-green-800'
+                        : 'text-red-800'
+                    }`}
+                  >
+                    {notification.message}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
