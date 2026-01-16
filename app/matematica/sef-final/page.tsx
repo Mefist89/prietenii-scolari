@@ -39,7 +39,7 @@ export default function SefFinalPage() {
   const [gameState, setGameState] = useState<'intro' | 'playing' | 'finished'>('intro');
   const [currentRound, setCurrentRound] = useState(0);
   const [roundData, setRoundData] = useState<{ target: number; expressions: { text: string; result: number }[] } | null>(null);
-  const [timer, setTimer] = useState(5);
+  const [timer, setTimer] = useState(10);
   const [mayaScore, setMayaScore] = useState(0);
   const [stingScore, setStingScore] = useState(0);
   const [roundWinner, setRoundWinner] = useState<'maya' | 'sting' | 'none' | null>(null);
@@ -142,23 +142,48 @@ export default function SefFinalPage() {
   // INTRO
   if (gameState === 'intro') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-800 via-gray-700 to-gray-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 flex items-center justify-center p-4 overflow-hidden relative">
+        {/* Animated background stars */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-yellow-300 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                scale: [1, 1.5, 1],
+                opacity: [0.5, 1, 0.5],
+              }}
+              transition={{
+                duration: 2 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+              }}
+            />
+          ))}
+        </div>
+
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="bg-white rounded-3xl shadow-2xl p-8 max-w-4xl w-full"
+          className="bg-gradient-to-b from-white to-yellow-50 rounded-3xl shadow-2xl p-8 max-w-4xl w-full relative z-10 border-4 border-yellow-400"
         >
           <motion.h1
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl md:text-5xl font-bold text-center text-red-600 mb-8"
+            className="text-4xl md:text-6xl font-bold text-center mb-8"
           >
-            ⚔️ BĂTĂLIA FINALĂ ⚔️
+            <span className="bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent">
+              ⚔️ BĂTĂLIA FINALĂ ⚔️
+            </span>
           </motion.h1>
 
-          <div className="flex justify-center items-center gap-8 mb-8">
+          <div className="flex justify-center items-center gap-4 md:gap-8 mb-8">
             {/* Maya */}
             <motion.div
               initial={{ x: -100, opacity: 0 }}
@@ -166,24 +191,37 @@ export default function SefFinalPage() {
               transition={{ delay: 0.3, type: 'spring' }}
               className="text-center"
             >
-              <Image
-                src="/images/characters/maya-math/hero-maya-happy.png"
-                alt="Maya"
-                width={180}
-                height={180}
-                className="mx-auto"
-              />
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="relative"
+              >
+                <div className="absolute -inset-4 bg-yellow-400/30 rounded-full blur-xl"></div>
+                <Image
+                  src="/images/characters/maya-math/hero-maya-happy.png"
+                  alt="Maya"
+                  width={180}
+                  height={180}
+                  className="mx-auto relative z-10"
+                />
+              </motion.div>
               <p className="text-2xl font-bold text-yellow-600 mt-2">MAYA</p>
-              <p className="text-gray-600">(Tu)</p>
+              <p className="text-gray-500 font-medium">(Tu)</p>
             </motion.div>
 
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.5, type: 'spring' }}
-              className="text-6xl font-bold text-red-600"
+              className="relative"
             >
-              VS
+              <motion.span
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
+                className="text-5xl md:text-7xl font-black text-red-600 drop-shadow-lg"
+              >
+                VS
+              </motion.span>
             </motion.div>
 
             {/* Sting */}
@@ -193,15 +231,22 @@ export default function SefFinalPage() {
               transition={{ delay: 0.3, type: 'spring' }}
               className="text-center"
             >
-              <Image
-                src="/images/characters/maya-math/Sting.png"
-                alt="Sting"
-                width={180}
-                height={180}
-                className="mx-auto"
-              />
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                className="relative"
+              >
+                <div className="absolute -inset-4 bg-orange-400/30 rounded-full blur-xl"></div>
+                <Image
+                  src="/images/characters/maya-math/Sting.png"
+                  alt="Sting"
+                  width={180}
+                  height={180}
+                  className="mx-auto relative z-10"
+                />
+              </motion.div>
               <p className="text-2xl font-bold text-orange-600 mt-2">STING</p>
-              <p className="text-gray-600">(CPU)</p>
+              <p className="text-gray-500 font-medium">(CPU)</p>
             </motion.div>
           </div>
 
@@ -209,15 +254,32 @@ export default function SefFinalPage() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="bg-yellow-100 rounded-xl p-6 mb-8"
+            className="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-2xl p-6 mb-8 border-2 border-yellow-300"
           >
-            <h2 className="text-xl font-bold text-yellow-800 mb-4">📜 Reguli:</h2>
-            <ul className="text-lg text-gray-700 space-y-2">
-              <li>• Apare un număr în caseta portocalie</li>
-              <li>• Găsește expresia care dă acest rezultat</li>
-              <li>• Ai 10 secunde să răspunzi!</li>
-              <li>• Sting răspunde în 5 secunde - fii rapid!</li>
-              <li>• Primul care răspunde corect câștigă punctul</li>
+            <h2 className="text-2xl font-bold text-yellow-800 mb-4 flex items-center gap-2">
+              <span className="text-3xl">📜</span> Reguli:
+            </h2>
+            <ul className="text-lg text-gray-700 space-y-3">
+              <li className="flex items-center gap-3">
+                <span className="text-2xl">🎯</span>
+                Apare un număr în caseta portocalie
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-2xl">🔍</span>
+                Găsește expresia care dă acest rezultat
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-2xl">⏱️</span>
+                Ai <span className="font-bold text-red-600">10 secunde</span> să răspunzi!
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-2xl">🐝</span>
+                Sting răspunde în <span className="font-bold text-orange-600">5 secunde</span> - fii rapid!
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-2xl">🏆</span>
+                Primul care răspunde corect câștigă punctul
+              </li>
             </ul>
           </motion.div>
 
@@ -229,7 +291,7 @@ export default function SefFinalPage() {
           >
             <Link
               href="/matematica/menu"
-              className="px-8 py-4 bg-gray-400 hover:bg-gray-500 text-white font-bold text-xl rounded-full transition-all hover:scale-105"
+              className="px-8 py-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-xl rounded-full transition-all hover:scale-105 border-2 border-gray-300"
             >
               ← Înapoi
             </Link>
@@ -237,7 +299,7 @@ export default function SefFinalPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={startGame}
-              className="px-12 py-4 bg-red-600 hover:bg-red-700 text-white font-bold text-xl rounded-full shadow-lg"
+              className="px-12 py-4 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold text-xl rounded-full shadow-lg border-2 border-red-400"
             >
               🎮 START BĂTĂLIA!
             </motion.button>
@@ -249,21 +311,46 @@ export default function SefFinalPage() {
 
   // PLAYING
   if (gameState === 'playing' && roundData) {
+    const timerPercentage = (timer / 10) * 100;
+
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-300 to-gray-400 p-4">
-        <div className="max-w-7xl mx-auto">
-          {/* Timer */}
-          <div className="flex justify-center mb-4">
-            <motion.div
-              key={timer}
-              initial={{ scale: 1.5 }}
-              animate={{ scale: 1 }}
-              className={`px-8 py-3 rounded-full text-2xl font-bold text-white ${
-                timer <= 3 ? 'bg-red-500' : 'bg-green-500'
-              }`}
-            >
-              {timer} sec
-            </motion.div>
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 p-4 relative overflow-hidden">
+        {/* Animated background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Timer Bar */}
+          <div className="mb-4">
+            <div className="flex justify-center mb-2">
+              <motion.div
+                key={timer}
+                initial={{ scale: 1.3 }}
+                animate={{ scale: 1 }}
+                className={`px-6 py-2 rounded-full text-2xl font-bold text-white shadow-lg ${
+                  timer <= 3 ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'
+                }`}
+              >
+                ⏱️ {timer} sec
+              </motion.div>
+            </div>
+            <div className="w-full max-w-md mx-auto h-3 bg-gray-700 rounded-full overflow-hidden">
+              <motion.div
+                className={`h-full rounded-full ${timer <= 3 ? 'bg-red-500' : 'bg-emerald-500'}`}
+                initial={{ width: '100%' }}
+                animate={{ width: `${timerPercentage}%` }}
+                transition={{ duration: 0.5 }}
+              />
+            </div>
+          </div>
+
+          {/* Round indicator */}
+          <div className="text-center mb-4">
+            <span className="text-lg font-bold text-white/80 bg-white/10 px-4 py-1 rounded-full backdrop-blur-sm">
+              Runda {currentRound + 1} din {totalRounds}
+            </span>
           </div>
 
           {/* Target Number */}
@@ -273,72 +360,96 @@ export default function SefFinalPage() {
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', stiffness: 200 }}
-              className="bg-orange-400 rounded-3xl px-16 py-6 shadow-2xl"
+              className="relative"
             >
-              <span className="text-7xl md:text-8xl font-bold text-white">{roundData.target}</span>
+              <div className="absolute -inset-4 bg-orange-500/50 rounded-3xl blur-xl"></div>
+              <div className="relative bg-gradient-to-br from-orange-400 to-yellow-500 rounded-3xl px-12 md:px-20 py-6 shadow-2xl border-4 border-yellow-300">
+                <span className="text-6xl md:text-8xl font-black text-white drop-shadow-lg">{roundData.target}</span>
+              </div>
             </motion.div>
           </div>
 
           {/* Main Row: Maya - Expressions - Sting */}
-          <div className="flex justify-center items-center gap-4 md:gap-8 px-4">
+          <div className="flex justify-center items-center gap-2 md:gap-6 px-2">
             {/* Maya */}
             <motion.div
-              animate={roundWinner === 'maya' ? { y: [0, -20, 0] } : {}}
-              transition={{ repeat: roundWinner === 'maya' ? 3 : 0, duration: 0.3 }}
+              animate={roundWinner === 'maya' ? { y: [0, -30, 0] } : {}}
+              transition={{ repeat: roundWinner === 'maya' ? 3 : 0, duration: 0.4 }}
               className="text-center flex-shrink-0"
             >
-              <div className="bg-yellow-100 rounded-xl px-4 py-2 mb-2 inline-block">
-                <span className="text-2xl md:text-3xl font-bold text-yellow-600">{mayaScore}</span>
-              </div>
-              <div>
+              {/* Score badge - выше персонажа */}
+              <motion.div
+                key={mayaScore}
+                initial={{ scale: 1.3 }}
+                animate={{ scale: 1 }}
+                className="mb-3"
+              >
+                <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-xl border-4 border-yellow-300 mx-auto">
+                  <span className="text-2xl md:text-3xl font-black text-yellow-900">{mayaScore}</span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="relative"
+              >
+                {/* Glow effect */}
+                <div className={`absolute -inset-2 rounded-full blur-lg transition-all duration-300 ${
+                  roundWinner === 'maya' ? 'bg-green-400/60' : roundWinner === 'sting' ? 'bg-gray-400/30' : 'bg-yellow-400/40'
+                }`}></div>
+
                 <Image
                   src="/images/characters/maya-math/hero-maya-happy.png"
                   alt="Maya"
-                  width={140}
-                  height={180}
-                  className={roundWinner === 'sting' ? 'grayscale opacity-50' : ''}
+                  width={130}
+                  height={170}
+                  className={`relative z-10 transition-all duration-300 ${roundWinner === 'sting' ? 'grayscale opacity-50' : ''}`}
                 />
-              </div>
+              </motion.div>
+
               <AnimatePresence>
                 {roundWinner === 'maya' && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, scale: 0, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="text-lg font-bold text-green-600 mt-2"
+                    className="mt-2"
                   >
-                    +1! 🎉
+                    <span className="bg-green-500 text-white px-4 py-2 rounded-full font-bold text-lg shadow-lg">
+                      +1! 🎉
+                    </span>
                   </motion.div>
                 )}
               </AnimatePresence>
             </motion.div>
 
             {/* Expressions */}
-            <div className="flex-1 max-w-sm">
+            <div className="flex-1 max-w-xs md:max-w-sm">
               <div className="grid grid-cols-1 gap-2">
                 {roundData.expressions.map((expr, index) => {
                   const isCorrect = expr.result === roundData.target;
                   const isSelected = selectedAnswer === expr.result;
                   const showResult = roundWinner !== null;
 
-                  let bgColor = 'bg-blue-500 hover:bg-blue-600';
+                  let buttonStyle = 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 border-blue-400';
                   if (showResult) {
-                    if (isCorrect) bgColor = 'bg-green-500 ring-4 ring-green-300';
-                    else if (isSelected) bgColor = 'bg-red-500';
-                    else bgColor = 'bg-blue-300 opacity-60';
+                    if (isCorrect) buttonStyle = 'bg-gradient-to-r from-green-500 to-emerald-500 border-green-300 ring-4 ring-green-400/50';
+                    else if (isSelected) buttonStyle = 'bg-gradient-to-r from-red-500 to-red-600 border-red-400';
+                    else buttonStyle = 'bg-gradient-to-r from-gray-400 to-gray-500 border-gray-300 opacity-50';
                   }
 
                   return (
                     <motion.button
                       key={`${currentRound}-${index}`}
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, x: -30 }}
+                      animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
                       onClick={() => handleAnswer(expr.result)}
                       disabled={playerAnswered}
-                      whileHover={!playerAnswered ? { scale: 1.05 } : {}}
+                      whileHover={!playerAnswered ? { scale: 1.05, x: 5 } : {}}
                       whileTap={!playerAnswered ? { scale: 0.95 } : {}}
-                      className={`py-3 px-6 rounded-full text-xl font-bold text-white transition-colors ${bgColor} ${
+                      className={`py-3 px-6 rounded-xl text-xl font-bold text-white transition-all shadow-lg border-2 ${buttonStyle} ${
                         playerAnswered ? 'cursor-not-allowed' : 'cursor-pointer'
                       }`}
                     >
@@ -351,42 +462,56 @@ export default function SefFinalPage() {
 
             {/* Sting */}
             <motion.div
-              animate={roundWinner === 'sting' ? { y: [0, -20, 0] } : {}}
-              transition={{ repeat: roundWinner === 'sting' ? 3 : 0, duration: 0.3 }}
+              animate={roundWinner === 'sting' ? { y: [0, -30, 0] } : {}}
+              transition={{ repeat: roundWinner === 'sting' ? 3 : 0, duration: 0.4 }}
               className="text-center flex-shrink-0"
             >
-              <div className="bg-orange-100 rounded-xl px-4 py-2 mb-2 inline-block">
-                <span className="text-2xl md:text-3xl font-bold text-orange-600">{stingScore}</span>
-              </div>
-              <div>
+              {/* Score badge - выше персонажа */}
+              <motion.div
+                key={stingScore}
+                initial={{ scale: 1.3 }}
+                animate={{ scale: 1 }}
+                className="mb-3"
+              >
+                <div className="bg-gradient-to-r from-orange-400 to-orange-500 rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-xl border-4 border-orange-300 mx-auto">
+                  <span className="text-2xl md:text-3xl font-black text-orange-900">{stingScore}</span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                className="relative"
+              >
+                {/* Glow effect */}
+                <div className={`absolute -inset-2 rounded-full blur-lg transition-all duration-300 ${
+                  roundWinner === 'sting' ? 'bg-red-400/60' : roundWinner === 'maya' ? 'bg-gray-400/30' : 'bg-orange-400/40'
+                }`}></div>
+
                 <Image
                   src="/images/characters/maya-math/Sting.png"
                   alt="Sting"
-                  width={140}
-                  height={180}
-                  className={roundWinner === 'maya' ? 'grayscale opacity-50' : ''}
+                  width={130}
+                  height={170}
+                  className={`relative z-10 transition-all duration-300 ${roundWinner === 'maya' ? 'grayscale opacity-50' : ''}`}
                 />
-              </div>
+              </motion.div>
+
               <AnimatePresence>
                 {roundWinner === 'sting' && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, scale: 0, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="text-lg font-bold text-red-600 mt-2"
+                    className="mt-2"
                   >
-                    +1! 😈
+                    <span className="bg-red-500 text-white px-4 py-2 rounded-full font-bold text-lg shadow-lg">
+                      +1! 😈
+                    </span>
                   </motion.div>
                 )}
               </AnimatePresence>
             </motion.div>
-          </div>
-
-          {/* Round indicator */}
-          <div className="text-center mt-6">
-            <span className="text-xl font-bold text-gray-700 bg-white/80 px-4 py-2 rounded-full">
-              Runda {currentRound + 1}/{totalRounds}
-            </span>
           </div>
         </div>
       </div>
@@ -399,34 +524,65 @@ export default function SefFinalPage() {
     const tie = mayaScore === stingScore;
 
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-800 via-gray-700 to-gray-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 flex items-center justify-center p-4 overflow-hidden relative">
+        {/* Confetti effect for winner */}
+        {playerWon && (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {[...Array(30)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-4 h-4 rounded-full"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  backgroundColor: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'][Math.floor(Math.random() * 5)],
+                }}
+                initial={{ y: -20, opacity: 1 }}
+                animate={{
+                  y: '100vh',
+                  rotate: Math.random() * 360,
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 3 + Math.random() * 2,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+              />
+            ))}
+          </div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: 'spring' }}
-          className="bg-white rounded-3xl shadow-2xl p-8 max-w-2xl w-full text-center"
+          className="bg-gradient-to-b from-white to-gray-100 rounded-3xl shadow-2xl p-8 max-w-2xl w-full text-center relative z-10 border-4 border-yellow-400"
         >
           {playerWon ? (
             <>
               <motion.div
-                animate={{ rotate: [0, -10, 10, -10, 0] }}
-                transition={{ repeat: Infinity, duration: 1 }}
+                animate={{ rotate: [0, -10, 10, -10, 0], scale: [1, 1.1, 1] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
                 className="text-8xl mb-4"
               >
                 🏆
               </motion.div>
-              <h1 className="text-4xl font-bold text-green-600 mb-4">
-                FELICITĂRI! AI CÂȘTIGAT!
+              <h1 className="text-4xl md:text-5xl font-black mb-4">
+                <span className="bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
+                  FELICITĂRI! AI CÂȘTIGAT!
+                </span>
               </h1>
               <p className="text-xl text-gray-600 mb-6">
-                Maya a învins pe Sting! Ești campionul matematicii!
+                Maya a învins pe Sting! Ești campionul matematicii! 🌟
               </p>
             </>
           ) : tie ? (
             <>
               <div className="text-8xl mb-4">🤝</div>
-              <h1 className="text-4xl font-bold text-yellow-600 mb-4">
-                EGALITATE!
+              <h1 className="text-4xl md:text-5xl font-black mb-4">
+                <span className="bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">
+                  EGALITATE!
+                </span>
               </h1>
               <p className="text-xl text-gray-600 mb-6">
                 O luptă strânsă! Încearcă din nou pentru victorie!
@@ -435,43 +591,59 @@ export default function SefFinalPage() {
           ) : (
             <>
               <div className="text-8xl mb-4">😢</div>
-              <h1 className="text-4xl font-bold text-red-600 mb-4">
-                STING A CÂȘTIGAT!
+              <h1 className="text-4xl md:text-5xl font-black mb-4">
+                <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+                  STING A CÂȘTIGAT!
+                </span>
               </h1>
               <p className="text-xl text-gray-600 mb-6">
-                Nu-ți face griji! Exersează și încearcă din nou!
+                Nu-ți face griji! Exersează și încearcă din nou! 💪
               </p>
             </>
           )}
 
           {/* Score */}
-          <div className="flex justify-center gap-12 mb-8">
+          <div className="flex justify-center items-center gap-6 md:gap-12 mb-8">
             <motion.div
               initial={{ x: -50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               className="text-center"
             >
-              <Image
-                src="/images/characters/maya-math/hero-maya-happy.png"
-                alt="Maya"
-                width={100}
-                height={100}
-              />
-              <p className="text-3xl font-bold text-yellow-600">{mayaScore}</p>
+              <div className="relative">
+                <div className={`absolute -inset-2 rounded-full blur-lg ${playerWon ? 'bg-green-400/50' : 'bg-gray-300/50'}`}></div>
+                <Image
+                  src="/images/characters/maya-math/hero-maya-happy.png"
+                  alt="Maya"
+                  width={100}
+                  height={100}
+                  className="relative z-10"
+                />
+              </div>
+              <div className="mt-2 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full px-6 py-2 inline-block">
+                <p className="text-3xl font-black text-yellow-900">{mayaScore}</p>
+              </div>
             </motion.div>
-            <div className="text-4xl font-bold text-gray-400 self-center">-</div>
+
+            <div className="text-5xl font-black text-gray-300">-</div>
+
             <motion.div
               initial={{ x: 50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               className="text-center"
             >
-              <Image
-                src="/images/characters/maya-math/Sting.png"
-                alt="Sting"
-                width={100}
-                height={100}
-              />
-              <p className="text-3xl font-bold text-orange-600">{stingScore}</p>
+              <div className="relative">
+                <div className={`absolute -inset-2 rounded-full blur-lg ${!playerWon && !tie ? 'bg-red-400/50' : 'bg-gray-300/50'}`}></div>
+                <Image
+                  src="/images/characters/maya-math/Sting.png"
+                  alt="Sting"
+                  width={100}
+                  height={100}
+                  className="relative z-10"
+                />
+              </div>
+              <div className="mt-2 bg-gradient-to-r from-orange-400 to-orange-500 rounded-full px-6 py-2 inline-block">
+                <p className="text-3xl font-black text-orange-900">{stingScore}</p>
+              </div>
             </motion.div>
           </div>
 
@@ -479,11 +651,11 @@ export default function SefFinalPage() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="flex justify-center gap-4"
+            className="flex flex-col sm:flex-row justify-center gap-4"
           >
             <Link
               href="/matematica/menu"
-              className="px-8 py-4 bg-gray-400 hover:bg-gray-500 text-white font-bold text-xl rounded-full transition-all hover:scale-105"
+              className="px-8 py-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-xl rounded-full transition-all hover:scale-105 border-2 border-gray-300"
             >
               ← Meniu
             </Link>
@@ -491,7 +663,7 @@ export default function SefFinalPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={startGame}
-              className="px-12 py-4 bg-red-600 hover:bg-red-700 text-white font-bold text-xl rounded-full shadow-lg"
+              className="px-12 py-4 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold text-xl rounded-full shadow-lg border-2 border-red-400"
             >
               🔄 Joacă din nou
             </motion.button>
@@ -503,8 +675,12 @@ export default function SefFinalPage() {
 
   // Loading fallback
   return (
-    <div className="min-h-screen bg-gray-800 flex items-center justify-center">
-      <div className="text-white text-2xl">Se încarcă...</div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 flex items-center justify-center">
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+        className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full"
+      />
     </div>
   );
 }
