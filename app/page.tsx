@@ -1,4 +1,10 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Prietenii Școlari - Jocuri Educative pentru Copii | Pagina Principală",
+  description: "Bine ai venit la Prietenii Școlari! Alege materia preferată și începe să înveți jucându-te: matematică cu Juja, informatică cu Iepurașul, limba română cu Vulpița.",
+};
 
 export default function HomePage() {
   return (

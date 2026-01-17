@@ -21,7 +21,7 @@ export default function MatematicaMenuPage() {
           className="object-cover"
         />
         {/* Затемнение на 20% */}
-        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       {/* Контент */}

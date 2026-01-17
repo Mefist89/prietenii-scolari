@@ -21,8 +21,8 @@ export default function MatematicaIntroPage() {
     const mayaTimer = setTimeout(() => {
       setShowMaya(true);
       // Начинаем показывать первый текст через 1 секунду после появления Маи
-      setTimeout(() => setShowText(true), 1000);
-    }, 2000);
+      setTimeout(() => setShowText(true), 500);
+    }, 1000);
 
     return () => clearTimeout(mayaTimer);
   }, []);
@@ -123,7 +123,7 @@ export default function MatematicaIntroPage() {
                     href="/matematica/menu"
                     className="px-12 py-4 bg-green-600 hover:bg-green-700 text-white text-2xl font-bold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                   >
-                    Da! Pornim la drum! 🚀
+                    Da!!!🚀
                   </Link>
                 </motion.div>
               )}
@@ -137,7 +137,7 @@ export default function MatematicaIntroPage() {
         href="/matematica/menu"
         className="absolute top-8 right-8 px-6 py-3 bg-yellow-600/80 hover:bg-yellow-700 text-white font-semibold rounded-full transition-colors z-30"
       >
-        Пропустить ⏭
+        Skip ⏭
       </Link>
     </div>
   );
