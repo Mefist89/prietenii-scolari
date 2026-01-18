@@ -79,25 +79,25 @@ export default function HomePage() {
                   className="relative cursor-pointer group"
                 >
                   {/* Outer Frame with Border */}
-                  <div className="bg-white rounded-[32px] p-4 shadow-2xl">
+                  <div className="bg-white rounded-[37px] p-5 shadow-2xl">
                     {/* Inner Card with Gradient Background */}
-                    <div className={`relative bg-gradient-to-br ${character.bgColor} rounded-[24px] overflow-hidden`}>
+                    <div className={`relative bg-gradient-to-br ${character.bgColor} rounded-[28px] overflow-hidden`}>
                       {/* Character Section */}
-                      <div className="relative h-80 flex items-end justify-center px-6 pt-8 pb-6">
+                      <div className="relative h-[368px] flex items-end justify-center px-7 pt-9 pb-7">
                         {/* Decorative floating elements */}
-                        <div className="absolute top-6 left-6 w-2 h-4 bg-white/30 rounded-full rotate-45"></div>
-                        <div className="absolute top-8 right-8 w-3 h-3 bg-white/30 rounded-full"></div>
-                        <div className="absolute bottom-24 left-8 w-2 h-2 bg-white/30 rounded-full"></div>
-                        <div className="absolute top-12 right-6 w-2 h-5 bg-white/30 rounded-full rotate-12"></div>
+                        <div className="absolute top-7 left-7 w-2 h-5 bg-white/30 rounded-full rotate-45"></div>
+                        <div className="absolute top-9 right-9 w-3 h-3 bg-white/30 rounded-full"></div>
+                        <div className="absolute bottom-28 left-9 w-2 h-2 bg-white/30 rounded-full"></div>
+                        <div className="absolute top-14 right-7 w-2 h-6 bg-white/30 rounded-full rotate-12"></div>
 
                         {/* Character */}
-                        <div className="relative z-10 flex flex-col items-center mb-4 w-full h-full">
+                        <div className="relative z-10 flex flex-col items-center mb-5 w-full h-full">
                           <motion.div
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.3 }}
                             className="w-full h-full flex items-end justify-center"
                           >
-                            <div className="relative w-[200px] h-[260px]">
+                            <div className="relative w-[230px] h-[299px]">
                               <Image
                                 src={character.image}
                                 alt={character.name}
@@ -111,16 +111,16 @@ export default function HomePage() {
                       </div>
 
                       {/* Info Blocks */}
-                      <div className="px-5 pb-5 space-y-3">
+                      <div className="px-6 pb-6 space-y-3">
                         {/* Subject Block */}
-                        <div className={`${character.id === 2 ? 'bg-gray-800/90' : character.id === 3 ? 'bg-red-950/90' : 'bg-white'} rounded-2xl p-4 shadow-lg`}>
+                        <div className={`${character.id === 2 ? 'bg-gray-800/90' : character.id === 3 ? 'bg-red-950/90' : 'bg-white'} rounded-2xl p-5 shadow-lg`}>
                           <div className="flex items-center gap-3">
-                            <div className={`w-12 h-12 bg-gradient-to-br ${character.iconBg} rounded-full flex items-center justify-center text-white text-xl shrink-0`}>
+                            <div className={`w-14 h-14 bg-gradient-to-br ${character.iconBg} rounded-full flex items-center justify-center text-white text-2xl shrink-0`}>
                               {character.id === 1 ? '➕' : character.id === 2 ? '💻' : '📖'}
                             </div>
                             <div className="min-w-0">
-                              <p className={`text-xs ${character.id === 2 || character.id === 3 ? 'text-gray-400' : 'text-gray-500'} font-medium`}>{character.name}</p>
-                              <p className={`text-base font-bold ${character.textColor} truncate`}>{character.subject}</p>
+                              <p className={`text-sm ${character.id === 2 || character.id === 3 ? 'text-gray-400' : 'text-gray-500'} font-medium`}>{character.name}</p>
+                              <p className={`text-lg font-bold ${character.textColor} truncate`}>{character.subject}</p>
                             </div>
                           </div>
                         </div>
@@ -129,7 +129,7 @@ export default function HomePage() {
                         <motion.button
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
-                          className={`w-full bg-gradient-to-r ${character.buttonBg} text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base`}
+                          className={`w-full bg-gradient-to-r ${character.buttonBg} text-white font-bold py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all text-lg`}
                         >
                           Începe Aventura
                         </motion.button>
