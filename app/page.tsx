@@ -12,6 +12,9 @@ const characters = [
     description: 'Maya te va învăța matematica',
     image: '/images/characters/maya-math/maya.png',
     bgColor: 'from-yellow-400 to-orange-500',
+    iconBg: 'from-orange-500 to-orange-600',
+    buttonBg: 'from-orange-500 to-orange-600',
+    textColor: 'text-orange-500',
     href: '/matematica',
   },
   {
@@ -20,7 +23,10 @@ const characters = [
     subject: 'Informatică',
     description: 'Byte te va învăța informatica',
     image: '/images/characters/byte-info/byte.png',
-    bgColor: 'from-cyan-400 to-blue-500',
+    bgColor: 'from-gray-800 to-gray-900',
+    iconBg: 'from-cyan-400 to-cyan-500',
+    buttonBg: 'from-cyan-400 to-blue-500',
+    textColor: 'text-cyan-400',
     href: '/informatica',
   },
   {
@@ -29,7 +35,10 @@ const characters = [
     subject: 'Limba Română',
     description: 'Lumi te va învăța limba română',
     image: '/images/characters/lumi-rom/lumi.png',
-    bgColor: 'from-pink-400 to-purple-500',
+    bgColor: 'from-red-900 to-amber-900',
+    iconBg: 'from-amber-500 to-orange-600',
+    buttonBg: 'from-amber-500 to-orange-600',
+    textColor: 'text-amber-400',
     href: '/limba-romana',
   },
 ];
@@ -54,66 +63,79 @@ export default function HomePage() {
         </motion.div>
 
         {/* Character Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 max-w-5xl mx-auto">
           {characters.map((character, index) => (
             <motion.div
               key={character.id}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
+              className="max-w-sm mx-auto w-full"
             >
               <Link href={character.href}>
                 <motion.div
                   whileHover={{ y: -10, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`relative bg-gradient-to-br ${character.bgColor} rounded-3xl overflow-hidden shadow-2xl cursor-pointer group`}
+                  className="relative cursor-pointer group"
                 >
-                  {/* Character Image */}
-                  <div className="relative h-80 flex items-end justify-center p-6 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.3 }}
-                      className="relative z-10"
-                    >
-                      <Image
-                        src={character.image}
-                        alt={character.name}
-                        width={300}
-                        height={400}
-                        className="object-contain drop-shadow-2xl"
-                        priority
-                      />
-                    </motion.div>
-                  </div>
+                  {/* Outer Frame with Border */}
+                  <div className="bg-white rounded-[32px] p-4 shadow-2xl">
+                    {/* Inner Card with Gradient Background */}
+                    <div className={`relative bg-gradient-to-br ${character.bgColor} rounded-[24px] overflow-hidden`}>
+                      {/* Character Section */}
+                      <div className="relative h-80 flex items-end justify-center px-6 pt-8 pb-6">
+                        {/* Decorative floating elements */}
+                        <div className="absolute top-6 left-6 w-2 h-4 bg-white/30 rounded-full rotate-45"></div>
+                        <div className="absolute top-8 right-8 w-3 h-3 bg-white/30 rounded-full"></div>
+                        <div className="absolute bottom-24 left-8 w-2 h-2 bg-white/30 rounded-full"></div>
+                        <div className="absolute top-12 right-6 w-2 h-5 bg-white/30 rounded-full rotate-12"></div>
 
-                  {/* Card Content */}
-                  <div className="bg-white p-6 relative">
-                    <h2 className="text-3xl font-black text-gray-800 mb-1">
-                      {character.subject}
-                    </h2>
-                    <p className="text-lg font-bold text-gray-600 mb-3">
-                      {character.name}
-                    </p>
-                    <p className="text-sm text-gray-500 mb-4">
-                      {character.description}
-                    </p>
+                        {/* Character */}
+                        <div className="relative z-10 flex flex-col items-center mb-4 w-full h-full">
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
+                            className="w-full h-full flex items-end justify-center"
+                          >
+                            <div className="relative w-[200px] h-[260px]">
+                              <Image
+                                src={character.image}
+                                alt={character.name}
+                                fill
+                                className="object-contain drop-shadow-2xl"
+                                priority
+                              />
+                            </div>
+                          </motion.div>
+                        </div>
+                      </div>
 
-                    {/* Know More Link */}
-                    <div className="flex items-center text-gray-700 font-semibold group-hover:text-gray-900 transition-colors">
-                      <span>Joacă acum</span>
-                      <motion.span
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 1, repeat: Infinity }}
-                        className="ml-2"
-                      >
-                        →
-                      </motion.span>
+                      {/* Info Blocks */}
+                      <div className="px-5 pb-5 space-y-3">
+                        {/* Subject Block */}
+                        <div className={`${character.id === 2 ? 'bg-gray-800/90' : character.id === 3 ? 'bg-red-950/90' : 'bg-white'} rounded-2xl p-4 shadow-lg`}>
+                          <div className="flex items-center gap-3">
+                            <div className={`w-12 h-12 bg-gradient-to-br ${character.iconBg} rounded-full flex items-center justify-center text-white text-xl shrink-0`}>
+                              {character.id === 1 ? '➕' : character.id === 2 ? '💻' : '📖'}
+                            </div>
+                            <div className="min-w-0">
+                              <p className={`text-xs ${character.id === 2 || character.id === 3 ? 'text-gray-400' : 'text-gray-500'} font-medium`}>{character.name}</p>
+                              <p className={`text-base font-bold ${character.textColor} truncate`}>{character.subject}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Start Button */}
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className={`w-full bg-gradient-to-r ${character.buttonBg} text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base`}
+                        >
+                          Începe Aventura
+                        </motion.button>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Decorative Circle */}
-                  <div className="absolute top-4 right-4 w-12 h-12 bg-white/30 rounded-full backdrop-blur-sm"></div>
                 </motion.div>
               </Link>
             </motion.div>
