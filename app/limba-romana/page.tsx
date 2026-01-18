@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Компонент для печатающегося текста
 function TypewriterText({
   text,
   delay = 0,
   onComplete,
-  className
+  className,
 }: {
   text: string;
   delay?: number;
   onComplete?: () => void;
   className?: string;
 }) {
-  const [displayedText, setDisplayedText] = useState('');
+  const [displayedText, setDisplayedText] = useState("");
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
@@ -96,13 +96,17 @@ export default function RomanaMenuPage() {
             <motion.div
               initial={{ x: -300, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+              transition={{ type: "spring", stiffness: 100, damping: 15 }}
               className="flex flex-col items-center"
             >
               {/* Lumi */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
                 <Image
                   src="/images/characters/lumi-rom/lumi.png"
@@ -120,7 +124,7 @@ export default function RomanaMenuPage() {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.5, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 15 }}
                     className="mt-6 relative"
                   >
                     {/* Пузырь с текстом */}
@@ -130,7 +134,7 @@ export default function RomanaMenuPage() {
                       <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[16px] border-b-[#F0F4E5]"></div>
 
                       <TypewriterText
-                        text="Bună ziua! Eu sunt Lumi! 🦊"
+                        text="Bună ziua! Eu sunt Lumi!"
                         delay={300}
                         onComplete={() => setText1Complete(true)}
                         className="text-[#612422] text-xl md:text-2xl font-bold text-center"
@@ -155,7 +159,7 @@ export default function RomanaMenuPage() {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.5, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 15 }}
                     className="mt-6"
                   >
                     <Link href="/limba-romana/menu">
