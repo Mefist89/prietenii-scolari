@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const levels = [
-  { id: 1, title: 'Nivel 1', subtitle: 'Literele A-E', href: '/limba-romana/nivel-1', unlocked: true },
-  { id: 2, title: 'Nivel 2', subtitle: 'Literele F-J', href: '/limba-romana/nivel-2', unlocked: true },
-  { id: 3, title: 'Nivel 3', subtitle: 'Literele K-O', href: '/limba-romana/nivel-3', unlocked: true },
-  { id: 4, title: 'Nivel 4', subtitle: 'Literele P-T', href: '/limba-romana/nivel-4', unlocked: true },
-  { id: 5, title: 'Nivel 5', subtitle: 'Literele U-Z', href: '/limba-romana/nivel-5', unlocked: true },
+  { id: 1, title: 'Nivel 1', subtitle: 'Sunetul "R"', href: '/limba-romana/nivel-1', unlocked: true },
+  { id: 2, title: 'Nivel 2', subtitle: 'Silabe și Cuvinte', href: '/limba-romana/nivel-2', unlocked: true },
+  { id: 3, title: 'Nivel 3', subtitle: 'Antonime', href: '/limba-romana/nivel-3', unlocked: true },
+  { id: 4, title: 'Nivel 4', subtitle: 'Singular și Plural', href: '/limba-romana/nivel-4', unlocked: true },
+  { id: 5, title: 'Nivel 5', subtitle: 'Completează Textul', href: '/limba-romana/nivel-5', unlocked: true },
 ];
 
 export default function RomanaMenuPage() {
