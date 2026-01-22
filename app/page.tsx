@@ -167,6 +167,20 @@ export default function HomePage() {
           >
             👥 Creatori
           </Link>
+          <Link
+            href="/limba?lang=ro"
+            className="px-8 py-3 bg-white hover:bg-purple-50 text-purple-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all border-2 border-purple-200 flex items-center gap-2"
+          >
+            <Image src="/images/flags/ro.svg" alt="Română" width={24} height={16} className="rounded-sm" />
+            Română
+          </Link>
+          <Link
+            href="/limba?lang=en"
+            className="px-8 py-3 bg-white hover:bg-purple-50 text-purple-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all border-2 border-purple-200 flex items-center gap-2"
+          >
+            <Image src="/images/flags/en.svg" alt="English" width={24} height={16} className="rounded-sm" />
+            English
+          </Link>
         </motion.div>
       </div>
     </div>
