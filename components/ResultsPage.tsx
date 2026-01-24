@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
 interface ResultsPageProps {
   score: number;
@@ -22,6 +23,7 @@ export default function ResultsPage({
   nextLevelPath = '/matematica/nivel-3',
   menuPath = '/matematica/menu',
 }: ResultsPageProps) {
+  const t = useTranslations('Results');
   const [showLoading, setShowLoading] = useState(true);
   const [showResults, setShowResults] = useState(false);
   const [animatedScore, setAnimatedScore] = useState(0);
@@ -30,7 +32,6 @@ export default function ResultsPage({
 
   const percentage = Math.round((score / totalQuestions) * 100);
 
-  // Определяем эмоцию Маи и сообщение
   const getMayaEmotion = () => {
     if (percentage === 100) return { image: 'hero-maya-happy.png', emoji: '🏆' };
     if (percentage >= 85) return { image: 'hero-maya-happy.png', emoji: '⭐' };
@@ -39,24 +40,22 @@ export default function ResultsPage({
   };
 
   const getMessage = () => {
-    if (percentage === 100) return 'Perfect! Ești un campion absolut!';
-    if (percentage >= 85) return 'Foarte bine! Ai făcut treabă excelentă!';
-    if (percentage >= 70) return 'Bine! Mai încearcă o dată pentru rezultat perfect!';
-    return 'Nu te descuraja! Încearcă din nou, știu că poți mai bine!';
+    if (percentage === 100) return t('perfect');
+    if (percentage >= 85) return t('veryGood');
+    if (percentage >= 70) return t('good');
+    return t('tryHarder');
   };
 
   const mayaData = getMayaEmotion();
 
   useEffect(() => {
-    // Этап 1: Загрузка (2 секунды)
     const loadingTimer = setTimeout(() => {
       setShowLoading(false);
       setShowResults(true);
     }, 2000);
 
-    // Этап 2: Анимация подсчета очков (начинается сразу после загрузки)
     const scoreAnimationTimer = setTimeout(() => {
-      const duration = 1500; // 1.5 секунды
+      const duration = 1500;
       const steps = 60;
       const increment = score / steps;
       let currentStep = 0;
@@ -72,12 +71,10 @@ export default function ResultsPage({
       }, duration / steps);
     }, 2000);
 
-    // Этап 3: Появление Маи (через 1 секунду после начала подсчета)
     const mayaTimer = setTimeout(() => {
       setShowMaya(true);
     }, 3000);
 
-    // Этап 4: Появление кнопок (через 0.5 секунды после Маи)
     const buttonsTimer = setTimeout(() => {
       setShowButtons(true);
     }, 3500);
@@ -92,7 +89,6 @@ export default function ResultsPage({
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Фон */}
       <div className="absolute inset-0">
         <Image
           src="/images/math/bg-frame.jpg"
@@ -104,10 +100,8 @@ export default function ResultsPage({
         <div className="absolute inset-0 bg-black/20"></div>
       </div>
 
-      {/* Контент */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-8">
         <AnimatePresence mode="wait">
-          {/* Экран загрузки */}
           {showLoading && (
             <motion.div
               key="loading"
@@ -124,13 +118,12 @@ export default function ResultsPage({
                     transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                     className="w-20 h-20 border-8 border-yellow-400 border-t-transparent rounded-full"
                   />
-                  <h2 className="text-3xl font-bold text-[#E67E3B]">Se verifică răspunsurile...</h2>
+                  <h2 className="text-3xl font-bold text-[#E67E3B]">{t('checking')}</h2>
                 </div>
               </div>
             </motion.div>
           )}
 
-          {/* Экран результатов */}
           {showResults && (
             <motion.div
               key="results"
@@ -140,7 +133,6 @@ export default function ResultsPage({
               className="w-full max-w-4xl"
             >
               <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden">
-                {/* Заголовок */}
                 <div className="bg-gradient-to-r from-[#F4D35E] to-[#E67E3B] p-8 text-center">
                   <motion.div
                     initial={{ scale: 0 }}
@@ -151,12 +143,11 @@ export default function ResultsPage({
                     {mayaData.emoji}
                   </motion.div>
                   <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-                    Rezultatul tău
+                    {t('yourResult')}
                   </h1>
                   <p className="text-xl text-white/90">{levelName}</p>
                 </div>
 
-                {/* Очки */}
                 <div className="p-8 md:p-12">
                   <div className="text-center mb-8">
                     <motion.div
@@ -169,7 +160,6 @@ export default function ResultsPage({
                       <span className="text-5xl md:text-6xl text-gray-500">/{totalQuestions}</span>
                     </motion.div>
 
-                    {/* Прогресс бар */}
                     <div className="w-full max-w-md mx-auto bg-gray-200 rounded-full h-6 overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
@@ -186,10 +176,9 @@ export default function ResultsPage({
                         }`}
                       />
                     </div>
-                    <p className="text-2xl font-semibold text-gray-700 mt-4">{percentage}% corect!</p>
+                    <p className="text-2xl font-semibold text-gray-700 mt-4">{percentage}% {t('correctPercent')}</p>
                   </div>
 
-                  {/* Мая */}
                   <AnimatePresence>
                     {showMaya && (
                       <motion.div
@@ -214,7 +203,6 @@ export default function ResultsPage({
                     )}
                   </AnimatePresence>
 
-                  {/* Кнопки */}
                   <AnimatePresence>
                     {showButtons && (
                       <motion.div
@@ -224,23 +212,23 @@ export default function ResultsPage({
                         className="flex flex-wrap justify-center gap-4"
                       >
                         <Link
-                          href={menuPath}
+                          href={menuPath as '/matematica/menu'}
                           className="px-8 py-4 bg-yellow-600 hover:bg-yellow-700 text-white text-xl font-bold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                         >
-                          ← Înapoi la Meniu
+                          ← {t('backToMenu')}
                         </Link>
                         <button
                           onClick={onRetry}
                           className="px-8 py-4 bg-orange-600 hover:bg-orange-700 text-white text-xl font-bold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                         >
-                          🔄 Încearcă din nou
+                          🔄 {t('tryAgain')}
                         </button>
                         {percentage >= 70 && nextLevelPath && (
                           <Link
-                            href={nextLevelPath}
+                            href={nextLevelPath as '/matematica/nivel-3'}
                             className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white text-xl font-bold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                           >
-                            Următorul Nivel →
+                            {t('nextLevel')} →
                           </Link>
                         )}
                       </motion.div>
@@ -253,19 +241,18 @@ export default function ResultsPage({
         </AnimatePresence>
       </div>
 
-      {/* Конфетти для отличных результатов */}
       {showMaya && percentage >= 85 && (
         <div className="fixed inset-0 pointer-events-none z-50">
           {[...Array(30)].map((_, i) => (
             <motion.div
               key={i}
               initial={{
-                x: Math.random() * window.innerWidth,
+                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
                 y: -20,
                 rotate: 0,
               }}
               animate={{
-                y: window.innerHeight + 100,
+                y: (typeof window !== 'undefined' ? window.innerHeight : 800) + 100,
                 rotate: 360,
               }}
               transition={{

@@ -28,11 +28,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="ro">
+    <html lang="ro" suppressHydrationWarning>
       <body
         className={`${nunito.variable} font-sans antialiased`}
         suppressHydrationWarning
