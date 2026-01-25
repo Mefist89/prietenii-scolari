@@ -219,15 +219,21 @@ export default function SefFinalPage() {
 
             <div className="text-4xl font-black text-[#E8A33D]">{t('Romanian.boss.vs')}</div>
 
-            {/* Boss - Wolf/Vulpe */}
+            {/* Boss - Nick */}
             <div className="text-center">
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
               >
-                <div className="text-[150px] leading-none">🦊</div>
+                <Image
+                  src="/images/characters/lumi-rom/nick.png"
+                  alt="Nick"
+                  width={200}
+                  height={267}
+                  className="h-[200px] w-auto object-contain drop-shadow-2xl"
+                />
               </motion.div>
-              <p className="text-[#F0F4E5] font-bold text-xl mt-2">{t('Romanian.boss.foxName')}</p>
+              <p className="text-[#F0F4E5] font-bold text-xl mt-2">Nick</p>
               <p className="text-red-400 text-sm">{t('Romanian.boss.opponent')}</p>
             </div>
           </motion.div>
@@ -422,7 +428,7 @@ export default function SefFinalPage() {
               </div>
             </div>
 
-            {/* Boss */}
+            {/* Boss - Nick */}
             <motion.div
               animate={roundWinner === 'boss' ? { y: [0, -30, 0] } : {}}
               transition={{ repeat: roundWinner === 'boss' ? 3 : 0, duration: 0.4 }}
@@ -448,9 +454,13 @@ export default function SefFinalPage() {
                   roundWinner === 'boss' ? 'bg-red-400/60' : roundWinner === 'lumi' ? 'bg-gray-400/30' : 'bg-orange-400/40'
                 }`}></div>
 
-                <div className={`text-[120px] leading-none relative z-10 transition-all duration-300 ${roundWinner === 'lumi' ? 'grayscale opacity-50' : ''}`}>
-                  🦊
-                </div>
+                <Image
+                  src="/images/characters/lumi-rom/nick.png"
+                  alt="Nick"
+                  width={180}
+                  height={240}
+                  className={`relative z-10 transition-all duration-300 h-[180px] w-auto object-contain ${roundWinner === 'lumi' ? 'grayscale opacity-50' : ''}`}
+                />
               </motion.div>
 
               <AnimatePresence>
@@ -487,26 +497,57 @@ export default function SefFinalPage() {
         <div className="absolute inset-0 bg-black/60"></div>
 
         <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
-          {/* Confetti for winner */}
+          {/* Confetti for winner - using fixed values to avoid hydration mismatch */}
           {playerWon && (
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              {[...Array(30)].map((_, i) => (
+              {[
+                { left: 5, rotate: 45, dur: 2.2, delay: 0.1 },
+                { left: 12, rotate: 120, dur: 3.1, delay: 0.3 },
+                { left: 20, rotate: 200, dur: 2.5, delay: 0.2 },
+                { left: 28, rotate: 80, dur: 3.5, delay: 0.4 },
+                { left: 35, rotate: 290, dur: 2.8, delay: 0.1 },
+                { left: 42, rotate: 150, dur: 3.2, delay: 0.5 },
+                { left: 50, rotate: 30, dur: 2.3, delay: 0.2 },
+                { left: 58, rotate: 180, dur: 3.8, delay: 0.3 },
+                { left: 65, rotate: 260, dur: 2.6, delay: 0.4 },
+                { left: 72, rotate: 100, dur: 3.0, delay: 0.1 },
+                { left: 80, rotate: 320, dur: 2.9, delay: 0.5 },
+                { left: 88, rotate: 60, dur: 3.3, delay: 0.2 },
+                { left: 95, rotate: 210, dur: 2.4, delay: 0.3 },
+                { left: 8, rotate: 140, dur: 3.6, delay: 0.4 },
+                { left: 18, rotate: 270, dur: 2.7, delay: 0.1 },
+                { left: 25, rotate: 15, dur: 3.4, delay: 0.5 },
+                { left: 33, rotate: 190, dur: 2.1, delay: 0.2 },
+                { left: 45, rotate: 85, dur: 3.7, delay: 0.3 },
+                { left: 55, rotate: 240, dur: 2.5, delay: 0.4 },
+                { left: 62, rotate: 340, dur: 3.1, delay: 0.1 },
+                { left: 70, rotate: 55, dur: 2.8, delay: 0.5 },
+                { left: 78, rotate: 165, dur: 3.3, delay: 0.2 },
+                { left: 85, rotate: 295, dur: 2.2, delay: 0.3 },
+                { left: 92, rotate: 110, dur: 3.5, delay: 0.4 },
+                { left: 3, rotate: 225, dur: 2.9, delay: 0.1 },
+                { left: 15, rotate: 350, dur: 3.0, delay: 0.5 },
+                { left: 38, rotate: 70, dur: 2.6, delay: 0.2 },
+                { left: 48, rotate: 180, dur: 3.2, delay: 0.3 },
+                { left: 68, rotate: 310, dur: 2.4, delay: 0.4 },
+                { left: 82, rotate: 25, dur: 3.8, delay: 0.1 },
+              ].map((item, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-3 h-3 rounded-full"
                   style={{
                     background: ['#E8A33D', '#4A6E3C', '#612422', '#F0F4E5'][i % 4],
-                    left: `${Math.random() * 100}%`,
+                    left: `${item.left}%`,
                   }}
                   initial={{ y: -20, opacity: 1 }}
                   animate={{
                     y: '100vh',
                     opacity: 0,
-                    rotate: Math.random() * 360,
+                    rotate: item.rotate,
                   }}
                   transition={{
-                    duration: 2 + Math.random() * 2,
-                    delay: Math.random() * 0.5,
+                    duration: item.dur,
+                    delay: item.delay,
                     repeat: Infinity,
                   }}
                 />
@@ -562,11 +603,17 @@ export default function SefFinalPage() {
             <div className="text-3xl font-black text-[#E8A33D]">{t('Romanian.boss.vs')}</div>
 
             <div className="text-center">
-              <div className="text-[80px] leading-none mb-2">🦊</div>
+              <Image
+                src="/images/characters/lumi-rom/nick.png"
+                alt="Nick"
+                width={120}
+                height={160}
+                className="h-[120px] w-auto object-contain mx-auto mb-2"
+              />
               <div className={`text-5xl font-black ${!playerWon && !isDraw ? 'text-red-400' : 'text-[#F0F4E5]'}`}>
                 {bossScore}
               </div>
-              <p className="text-[#F0F4E5] font-bold">{t('Romanian.boss.foxName')}</p>
+              <p className="text-[#F0F4E5] font-bold">Nick</p>
             </div>
           </motion.div>
 

@@ -524,6 +524,18 @@
     "check": "Verifică ✓",
     "finalBoss": "Șef Final",
     "finalChallenge": "Provocarea finală!",
+    "results": {
+      "checking": "Se verifică răspunsurile...",
+      "yourResult": "Rezultatul tău",
+      "correct": "corect!",
+      "perfect": "Perfect! Ești un campion al limbii române!",
+      "veryGood": "Foarte bine! Ai făcut treabă excelentă!",
+      "good": "Bine! Mai exersează pentru rezultate și mai bune!",
+      "tryAgain": "Nu te descuraja! Încearcă din nou, știu că poți!",
+      "backToMenu": "← Înapoi la Meniu",
+      "retry": "Încearcă din nou",
+      "nextLevel": "Următorul Nivel →"
+    },
     "intro": {
       "greeting": "Bună ziua! Eu sunt Lumi!",
       "invite": "Hai să învățăm limba română împreună!",

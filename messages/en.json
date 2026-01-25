@@ -524,6 +524,18 @@
     "check": "Check ✓",
     "finalBoss": "Final Boss",
     "finalChallenge": "The final challenge!",
+    "results": {
+      "checking": "Checking answers...",
+      "yourResult": "Your Result",
+      "correct": "correct!",
+      "perfect": "Perfect! You are a champion of Romanian language!",
+      "veryGood": "Very good! You did an excellent job!",
+      "good": "Good! Practice more for even better results!",
+      "tryAgain": "Don't give up! Try again, I know you can do it!",
+      "backToMenu": "← Back to Menu",
+      "retry": "Try again",
+      "nextLevel": "Next Level →"
+    },
     "intro": {
       "greeting": "Hello! I am Lumi!",
       "invite": "Let's learn Romanian language together!",

@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 interface ResultsPageRomanaProps {
   score: number;
@@ -22,6 +23,7 @@ export default function ResultsPageRomana({
   nextLevelPath,
   menuPath = '/limba-romana/menu',
 }: ResultsPageRomanaProps) {
+  const t = useTranslations('Romanian.results');
   const [showLoading, setShowLoading] = useState(true);
   const [showResults, setShowResults] = useState(false);
   const [animatedScore, setAnimatedScore] = useState(0);
@@ -38,10 +40,10 @@ export default function ResultsPageRomana({
   };
 
   const getMessage = () => {
-    if (percentage === 100) return 'Perfect! Ești un campion al limbii române!';
-    if (percentage >= 85) return 'Foarte bine! Ai făcut treabă excelentă!';
-    if (percentage >= 70) return 'Bine! Mai exersează pentru rezultate și mai bune!';
-    return 'Nu te descuraja! Încearcă din nou, știu că poți!';
+    if (percentage === 100) return t('perfect');
+    if (percentage >= 85) return t('veryGood');
+    if (percentage >= 70) return t('good');
+    return t('tryAgain');
   };
 
   const lumiData = getLumiEmotion();
@@ -110,7 +112,7 @@ export default function ResultsPageRomana({
                     transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                     className="w-20 h-20 border-8 border-[#E8A33D] border-t-transparent rounded-full"
                   />
-                  <h2 className="text-3xl font-bold text-[#612422]">Se verifică răspunsurile...</h2>
+                  <h2 className="text-3xl font-bold text-[#612422]">{t('checking')}</h2>
                 </div>
               </div>
             </motion.div>
@@ -136,7 +138,7 @@ export default function ResultsPageRomana({
                     {lumiData.emoji}
                   </motion.div>
                   <h1 className="text-4xl md:text-5xl font-bold text-[#F0F4E5] mb-2">
-                    Rezultatul tău
+                    {t('yourResult')}
                   </h1>
                   <p className="text-xl text-[#E8A33D]">{levelName}</p>
                 </div>
@@ -171,7 +173,7 @@ export default function ResultsPageRomana({
                         }`}
                       />
                     </div>
-                    <p className="text-2xl font-semibold text-[#612422] mt-4">{percentage}% corect!</p>
+                    <p className="text-2xl font-semibold text-[#612422] mt-4">{percentage}% {t('correct')}</p>
                   </div>
 
                   {/* Lumi */}
@@ -212,20 +214,20 @@ export default function ResultsPageRomana({
                           href={menuPath}
                           className="px-8 py-4 bg-[#4A6E3C] hover:bg-[#3D5C32] text-[#F0F4E5] text-xl font-bold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                         >
-                          ← Înapoi la Meniu
+                          {t('backToMenu')}
                         </Link>
                         <button
                           onClick={onRetry}
                           className="px-8 py-4 bg-[#E8A33D] hover:bg-[#D4922E] text-white text-xl font-bold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                         >
-                          🔄 Încearcă din nou
+                          🔄 {t('retry')}
                         </button>
                         {percentage >= 70 && nextLevelPath && (
                           <Link
                             href={nextLevelPath}
                             className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white text-xl font-bold rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
                           >
-                            Următorul Nivel →
+                            {t('nextLevel')}
                           </Link>
                         )}
                       </motion.div>
@@ -238,26 +240,57 @@ export default function ResultsPageRomana({
         </AnimatePresence>
       </div>
 
-      {/* Confetti */}
+      {/* Confetti - using fixed values to avoid hydration mismatch */}
       {showLumi && percentage >= 85 && (
         <div className="fixed inset-0 pointer-events-none z-50">
-          {[...Array(30)].map((_, i) => (
+          {[
+            { left: 5, rotate: 45, dur: 3.2, delay: 0.1 },
+            { left: 12, rotate: 120, dur: 4.1, delay: 0.3 },
+            { left: 20, rotate: 200, dur: 3.5, delay: 0.2 },
+            { left: 28, rotate: 80, dur: 4.5, delay: 0.4 },
+            { left: 35, rotate: 290, dur: 3.8, delay: 0.1 },
+            { left: 42, rotate: 150, dur: 4.2, delay: 0.5 },
+            { left: 50, rotate: 30, dur: 3.3, delay: 0.2 },
+            { left: 58, rotate: 180, dur: 4.8, delay: 0.3 },
+            { left: 65, rotate: 260, dur: 3.6, delay: 0.4 },
+            { left: 72, rotate: 100, dur: 4.0, delay: 0.1 },
+            { left: 80, rotate: 320, dur: 3.9, delay: 0.5 },
+            { left: 88, rotate: 60, dur: 4.3, delay: 0.2 },
+            { left: 95, rotate: 210, dur: 3.4, delay: 0.3 },
+            { left: 8, rotate: 140, dur: 4.6, delay: 0.4 },
+            { left: 18, rotate: 270, dur: 3.7, delay: 0.1 },
+            { left: 25, rotate: 15, dur: 4.4, delay: 0.5 },
+            { left: 33, rotate: 190, dur: 3.1, delay: 0.2 },
+            { left: 45, rotate: 85, dur: 4.7, delay: 0.3 },
+            { left: 55, rotate: 240, dur: 3.5, delay: 0.4 },
+            { left: 62, rotate: 340, dur: 4.1, delay: 0.1 },
+            { left: 70, rotate: 55, dur: 3.8, delay: 0.5 },
+            { left: 78, rotate: 165, dur: 4.3, delay: 0.2 },
+            { left: 85, rotate: 295, dur: 3.2, delay: 0.3 },
+            { left: 92, rotate: 110, dur: 4.5, delay: 0.4 },
+            { left: 3, rotate: 225, dur: 3.9, delay: 0.1 },
+            { left: 15, rotate: 350, dur: 4.0, delay: 0.5 },
+            { left: 38, rotate: 70, dur: 3.6, delay: 0.2 },
+            { left: 48, rotate: 180, dur: 4.2, delay: 0.3 },
+            { left: 68, rotate: 310, dur: 3.4, delay: 0.4 },
+            { left: 82, rotate: 25, dur: 4.8, delay: 0.1 },
+          ].map((item, i) => (
             <motion.div
               key={i}
               className="absolute w-4 h-4 rounded-full"
               style={{
                 background: ['#E8A33D', '#4A6E3C', '#612422', '#F0F4E5'][i % 4],
-                left: `${Math.random() * 100}%`,
+                left: `${item.left}%`,
               }}
               initial={{ y: -20, opacity: 1 }}
               animate={{
                 y: '100vh',
                 opacity: 0,
-                rotate: Math.random() * 360,
+                rotate: item.rotate,
               }}
               transition={{
-                duration: 3 + Math.random() * 2,
-                delay: Math.random() * 0.5,
+                duration: item.dur,
+                delay: item.delay,
                 repeat: Infinity,
               }}
             />
