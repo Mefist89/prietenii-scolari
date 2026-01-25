@@ -116,7 +116,7 @@ export default function InformaticaSefFinal() {
   // Intro Screen
   if (gameState === 'intro') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-500 via-orange-500 to-yellow-500 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center p-4" style={{ backgroundImage: "url('/images/info/bg-frame.jpg')" }}>
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -176,7 +176,7 @@ export default function InformaticaSefFinal() {
     const tie = playerScore === bossScore;
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center p-4" style={{ backgroundImage: "url('/images/info/bg-frame.jpg')" }}>
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -243,7 +243,7 @@ export default function InformaticaSefFinal() {
 
   // Battle Screen
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-500 via-orange-500 to-yellow-500 p-4 py-8">
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat p-4 py-8" style={{ backgroundImage: "url('/images/info/bg-frame.jpg')" }}>
       <div className="max-w-6xl mx-auto">
         {/* Battle Header */}
         <div className="grid grid-cols-3 gap-4 mb-6">

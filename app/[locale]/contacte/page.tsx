@@ -30,7 +30,7 @@ export default function ContactePage() {
               <div className="text-4xl">📧</div>
               <div>
                 <h3 className="font-bold text-xl text-blue-800 mb-2">{t('email')}</h3>
-                <p className="text-gray-700">contact@prietenii-scolari.ro</p>
+                <p className="text-gray-700">jeniabortnic@gmail.com</p>
               </div>
             </div>
 
@@ -38,7 +38,7 @@ export default function ContactePage() {
               <div className="text-4xl">📱</div>
               <div>
                 <h3 className="font-bold text-xl text-blue-800 mb-2">{t('phone')}</h3>
-                <p className="text-gray-700">+40 123 456 789</p>
+                <p className="text-gray-700">+373 78 329685</p>
               </div>
             </div>
 

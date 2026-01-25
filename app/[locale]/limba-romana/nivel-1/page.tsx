@@ -66,7 +66,7 @@ export default function Nivel1Page() {
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat relative overflow-hidden"
-      style={{ backgroundImage: "url('/images/rom/bg.png')" }}
+      style={{ backgroundImage: "url('/images/rom/bg-frame.jpg')" }}
     >
       <div className="absolute inset-0 bg-black/50"></div>
 

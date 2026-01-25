@@ -96,7 +96,7 @@ export default function InformaticaNivel3() {
 
   if (gameFinished) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center p-4" style={{ backgroundImage: "url('/images/info/bg-frame.jpg')" }}>
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -136,7 +136,7 @@ export default function InformaticaNivel3() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 p-4 py-8">
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat p-4 py-8" style={{ backgroundImage: "url('/images/info/bg-frame.jpg')" }}>
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
